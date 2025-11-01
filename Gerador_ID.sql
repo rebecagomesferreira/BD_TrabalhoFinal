@@ -1,0 +1,82 @@
+use EmpresaDeReciclagem;
+
+-- id de usuário
+DELIMITER //
+CREATE FUNCTION gerar_id_grupo()
+RETURNS CHAR(8)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('GRP', LPAD(FLOOR(RAND() * 9999), 4, '0'));
+END //
+DELIMITER ;
+
+-- id de grupo de usuário
+DELIMITER //
+CREATE FUNCTION gerar_id_usuario()
+RETURNS CHAR(10)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('USR', LPAD(FLOOR(RAND() * 999999), 6, '0'));
+END //
+DELIMITER ;
+
+-- id funcionário
+DELIMITER //
+CREATE FUNCTION gerar_id_funcionario(p_cargo VARCHAR(50))
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT(UPPER(LEFT(p_cargo, 3)), '-', YEAR(NOW()), '-', LPAD(FLOOR(RAND()*9999), 4, '0'));
+END //
+DELIMITER ;
+
+-- id cliente
+DELIMITER //
+CREATE FUNCTION gerar_id_cliente()
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('CLI-', YEAR(NOW()), '-', LPAD(FLOOR(RAND()*9999), 4, '0'));
+END //
+DELIMITER ;
+
+-- id fornecedor
+DELIMITER //
+CREATE FUNCTION gerar_id_fornecedor()
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('FOR-', YEAR(NOW()), '-', LPAD(FLOOR(RAND()*9999), 4, '0'));
+END //
+DELIMITER ;
+
+-- id material
+DELIMITER //
+CREATE FUNCTION gerar_id_material(p_tipo VARCHAR(20))
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('MAT-', UPPER(LEFT(p_tipo, 3)), '-', LPAD(FLOOR(RAND()*9999), 4, '0'));
+END //
+DELIMITER ;
+
+
+-- id documento de venda
+DELIMITER //
+CREATE FUNCTION gerar_id_venda()
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('VEN-', DATE_FORMAT(NOW(), '%y%m%d'), '-', LPAD(FLOOR(RAND()*999), 3, '0'));
+END //
+DELIMITER ;
+
+-- id documento de coleta
+DELIMITER //
+CREATE FUNCTION gerar_id_coleta()
+RETURNS CHAR(15)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('COL-', DATE_FORMAT(NOW(), '%y%m%d'), '-', LPAD(FLOOR(RAND()*999), 3, '0'));
+END //
+DELIMITER ;
