@@ -2,12 +2,29 @@
 USE EmpresaDeReciclagem;
 
 -- tabela grupo de usuários
-/*CREATE TABLE grupos_usuarios (
-    id_grupo CHAR(8) PRIMARY KEY,
+/*
+CREATE TABLE IF NOT EXISTS grupo_usuarios (
+    id_grupo CHAR(10) PRIMARY KEY,       -- ID customizado
     nome_grupo VARCHAR(50) NOT NULL UNIQUE,
-    descricao TEXT,
-    nivel_acesso INT NOT NULL  -- quanto maior, mais permissões
+    descricao TEXT NOT NULL,             -- Permissões do grupo
+    prioridade INT NOT NULL              -- Hierarquia do grupo
 );
+
+
+
+-- Tabela de Usuários
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nome_usuario VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    id_cliente CHAR(15) NULL,
+    id_funcionario CHAR(15) NULL,
+    id_grupo CHAR(10) NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ativo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (id_grupo) REFERENCES grupo_usuarios(id_grupo)
+);
+
 
 
 -- tabela fornecedor
