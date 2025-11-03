@@ -1,0 +1,165 @@
+[{
+  "_id": "VEN-20250921-001",
+  "data_venda": "2025-09-21",
+  "valor_total": 500,
+  "status": "Finalizada",
+  "atendente": {
+    "id_funcionario": "ATE-8805",
+    "nome": "Fernanda Costa"
+  },
+  "cliente": {
+    "id_cliente": "CLI-EmpresaVerde",
+    "nome": "Empresa Verde LTDA",
+    "cpf_cnpj": "111.222.333/0001-44",
+    "telefone": "11911112222"
+  },
+  "pagamento": {
+    "tipo": "Dinheiro",
+    "parcelamento": false,
+    "num_parcelas": null
+  },
+  "itens_vendidos": [
+    {
+      "tipo_material": "Plástico",
+      "quantidade_kg": 50,
+      "preco_unitario": 2.5
+    },
+    {
+      "tipo_material": "Papel",
+      "quantidade_kg": 100,
+      "preco_unitario": 1.2
+    }
+  ]
+},
+{
+  "_id": "VEN-20250922-002",
+  "data_venda": "2025-09-22",
+  "valor_total": 300,
+  "status": "Finalizada",
+  "atendente": {
+    "id_funcionario": "ATE-8805",
+    "nome": "Fernanda Costa"
+  },
+  "cliente": {
+    "id_cliente": "CLI-JoaoMartins",
+    "nome": "João Martins",
+    "cpf_cnpj": "222.333.444-55",
+    "telefone": "11922223333"
+  },
+  "pagamento": {
+    "tipo": "Cartão de Crédito",
+    "parcelamento": true,
+    "num_parcelas": 3
+  },
+  "itens_vendidos": [
+    {
+      "tipo_material": "Metal",
+      "quantidade_kg": 60,
+      "preco_unitario": 5
+    },
+    {
+      "tipo_material": "Vidro",
+      "quantidade_kg": 40,
+      "preco_unitario": 3
+    }
+  ]
+},
+{
+  "_id": "VEN-20250923-003",
+  "data_venda": "2025-09-23",
+  "valor_total": 450,
+  "status": "Finalizada",
+  "atendente": {
+    "id_funcionario": "MOT-9012",
+    "nome": "Marcos Pinto"
+  },
+  "cliente": {
+    "id_cliente": "CLI-LaraGomes",
+    "nome": "Lara Gomes",
+    "cpf_cnpj": "333.444.555-66",
+    "telefone": "11933334444"
+  },
+  "pagamento": {
+    "tipo": "Boleto",
+    "parcelamento": false,
+    "num_parcelas": null
+  },
+  "itens_vendidos": [
+    {
+      "tipo_material": "Orgânico",
+      "quantidade_kg": 50,
+      "preco_unitario": 0.8
+    },
+    {
+      "tipo_material": "Plástico",
+      "quantidade_kg": 70,
+      "preco_unitario": 2.5
+    }
+  ]
+},
+{
+  "_id": "VEN-20250924-004",
+  "data_venda": "2025-09-24",
+  "valor_total": 600,
+  "status": "Finalizada",
+  "atendente": {
+    "id_funcionario": "COL-9310",
+    "nome": "Ana Souza"
+  },
+  "cliente": {
+    "id_cliente": "CLI-EcoBrasil",
+    "nome": "Eco Brasil",
+    "cpf_cnpj": "444.555.666/0001-77",
+    "telefone": "11944445555"
+  },
+  "pagamento": {
+    "tipo": "Pix",
+    "parcelamento": false,
+    "num_parcelas": null
+  },
+  "itens_vendidos": [
+    {
+      "tipo_material": "Metal",
+      "quantidade_kg": 50,
+      "preco_unitario": 5
+    }
+  ]
+},
+{
+  "_id": "VEN-20250925-005",
+  "data_venda": "2025-09-25",
+  "valor_total": 350,
+  "status": "Finalizada",
+  "atendente": {
+    "id_funcionario": "SEP-9522",
+    "nome": "Roberto Lima"
+  },
+  "cliente": {
+    "id_cliente": "CLI-CarlosNunes",
+    "nome": "Carlos Nunes",
+    "cpf_cnpj": "555.666.777-88",
+    "telefone": "11955556666"
+  },
+  "pagamento": {
+    "tipo": "Cartão Débito",
+    "parcelamento": false,
+    "num_parcelas": null
+  },
+  "itens_vendidos": [
+    {
+      "tipo_material": "Papel",
+      "quantidade_kg": 80,
+      "preco_unitario": 1.2
+    },
+    {
+      "tipo_material": "Vidro",
+      "quantidade_kg": 60,
+      "preco_unitario": 3
+    },
+    {
+      "tipo_material": "Orgânico",
+      "quantidade_kg": 30,
+      "preco_unitario": 0.8
+    }
+  ]
+}]

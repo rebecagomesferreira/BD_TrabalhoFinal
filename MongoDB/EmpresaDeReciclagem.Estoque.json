@@ -1,0 +1,85 @@
+[{
+  "_id": 1,
+  "localizacao": "Galpão Central",
+  "capacidade": 1000,
+  "nivel_atual": 500,
+  "nivel_minimo": 100,
+  "materiais_armazenados": [
+    {
+      "tipo_material": "Plástico",
+      "ultima_entrega": "2025-09-20"
+    },
+    {
+      "tipo_material": "Papel",
+      "ultima_entrega": "2025-09-20"
+    }
+  ]
+},
+{
+  "_id": 2,
+  "localizacao": "Depósito Norte",
+  "capacidade": 500,
+  "nivel_atual": 200,
+  "nivel_minimo": 50,
+  "materiais_armazenados": [
+    {
+      "tipo_material": "Metal",
+      "ultima_entrega": "2025-09-21"
+    },
+    {
+      "tipo_material": "Vidro",
+      "ultima_entrega": "2025-09-21"
+    }
+  ]
+},
+{
+  "_id": 3,
+  "localizacao": "Depósito Sul",
+  "capacidade": 300,
+  "nivel_atual": 100,
+  "nivel_minimo": 30,
+  "materiais_armazenados": [
+    {
+      "tipo_material": "Orgânico",
+      "ultima_entrega": "2025-09-22"
+    }
+  ]
+},
+{
+  "_id": 4,
+  "localizacao": "Armazém Leste",
+  "capacidade": 600,
+  "nivel_atual": 250,
+  "nivel_minimo": 60,
+  "materiais_armazenados": [
+    {
+      "tipo_material": "Plástico",
+      "ultima_entrega": "2025-09-22"
+    },
+    {
+      "tipo_material": "Metal",
+      "ultima_entrega": "2025-09-23"
+    }
+  ]
+},
+{
+  "_id": 5,
+  "localizacao": "Armazém Oeste",
+  "capacidade": 400,
+  "nivel_atual": 150,
+  "nivel_minimo": 40,
+  "materiais_armazenados": [
+    {
+      "tipo_material": "Papel",
+      "ultima_entrega": "2025-09-23"
+    },
+    {
+      "tipo_material": "Vidro",
+      "ultima_entrega": "2025-09-24"
+    },
+    {
+      "tipo_material": "Orgânico",
+      "ultima_entrega": "2025-09-24"
+    }
+  ]
+}]
