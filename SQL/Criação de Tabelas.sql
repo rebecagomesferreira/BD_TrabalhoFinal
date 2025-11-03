@@ -2,7 +2,7 @@
 USE EmpresaDeReciclagem;
 
 -- tabela grupo de usuários
-/*
+
 CREATE TABLE IF NOT EXISTS grupo_usuarios (
     id_grupo CHAR(10) PRIMARY KEY,       -- ID customizado
     nome_grupo VARCHAR(50) NOT NULL UNIQUE,
@@ -244,7 +244,7 @@ JOIN MATERIAL m ON iv.id_material = m.id_material;
 SELECT c.nome AS cliente, SUM(dv.valor) AS total_gasto
 FROM DOCUMENTO_VENDA dv
 JOIN CLIENTE c ON dv.id_cliente = c.id_cliente
-GROUP BY c.nome;*/
+GROUP BY c.nome;
 
 -- atualizações
 UPDATE FORNECEDOR
