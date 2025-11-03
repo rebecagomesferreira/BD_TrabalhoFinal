@@ -67,20 +67,49 @@ SELECT * FROM TIPO_PAGAMENTO;
 
 --
 -- INSERTS: Entidades Dependentes (Corrigidas para usar nomes/chaves estáveis)
---
 
--- Corrigido: Usando 'localizacao' para ESTOQUE
+
+--  Primeiro, pegamos os ids dos estoques
+
+--  Porque se fizermos SELECT direto dentro do VALUES do INSERT,
+-- o MySQL vai reclamar (erro 1442) já que a trigger tenta atualizar
+-- a mesma tabela ESTOQUE ao mesmo tempo.
+SET @galpao_central = (SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Galpão Central');
+SET @deposito_norte = (SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Depósito Norte');
+SET @deposito_sul   = (SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Depósito Sul');
+SET @armazem_leste  = (SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Leste');
+SET @armazem_oeste  = (SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Oeste');
+
+
+--  Pegamos os ids dos materiais
+
+-- Mesma razão: evitar SELECT dentro do VALUES que acessa tabelas que 
+-- podem ser afetadas por triggers.
+SET @plastico = (SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico');
+SET @papel    = (SELECT id_material FROM MATERIAL WHERE tipo = 'Papel');
+SET @metal    = (SELECT id_material FROM MATERIAL WHERE tipo = 'Metal');
+SET @vidro    = (SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro');
+SET @organico = (SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico');
+
+
+--  Inserindo os materiais no estoque
+
+-- Usamos as variáveis em vez de SELECT dentro do VALUES.
+-- Assim, o INSERT não acessa diretamente ESTOQUE durante a execução,
+-- permitindo que a trigger atualize o nivel_atual sem erro.
 INSERT INTO ESTOQUE_ARMAZENA_MATERIAL (id_estoque, id_material, data_entrega) VALUES
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Galpão Central'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), '2025-09-20'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Galpão Central'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), '2025-09-20'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Depósito Norte'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), '2025-09-21'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Depósito Norte'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'), '2025-09-21'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Depósito Sul'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), '2025-09-22'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Leste'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), '2025-09-22'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Leste'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), '2025-09-23'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Oeste'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), '2025-09-23'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Oeste'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'), '2025-09-24'),
-((SELECT id_estoque FROM ESTOQUE WHERE localizacao = 'Armazém Oeste'), (SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), '2025-09-24');
+(@galpao_central, @plastico, '2025-09-20'),
+(@galpao_central, @papel, '2025-09-20'),
+(@deposito_norte, @metal, '2025-09-21'),
+(@deposito_norte, @vidro, '2025-09-21'),
+(@deposito_sul, @organico, '2025-09-22'),
+(@armazem_leste, @plastico, '2025-09-22'),
+(@armazem_leste, @metal, '2025-09-23'),
+(@armazem_oeste, @papel, '2025-09-23'),
+(@armazem_oeste, @vidro, '2025-09-24'),
+(@armazem_oeste, @organico, '2025-09-24');
+
+
 SELECT * FROM ESTOQUE_ARMAZENA_MATERIAL;
 
 -- Já estava correto no seu script (usando nome)
