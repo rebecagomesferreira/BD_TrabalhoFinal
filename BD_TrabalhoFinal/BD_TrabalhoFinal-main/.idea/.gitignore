@@ -1,0 +1,35 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VSCode
+.vscode/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# Maven
+target/
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configurações locais
+application-local.properties
+.env
+application.properties
+dataSources.xml
+compiler.xml
+encodings.xml
+jarRepositories.xml
+misc.xml
+modules.xml
+vcs.xml
+material_theme_project_new.xml
