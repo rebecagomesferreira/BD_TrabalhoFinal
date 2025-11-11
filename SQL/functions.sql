@@ -4,7 +4,11 @@ use EmpresaDeReciclagem;
 
 -- calcular valor gasto por cliente
 DELIMITER //
+<<<<<<< HEAD
 CREATE FUNCTION TotalGastoCliente(p_id_cliente INT)
+=======
+CREATE FUNCTION TotalGastoCliente(p_id_cliente CHAR(15))
+>>>>>>> d010dca (criação controller e service fornecedor)
 RETURNS DECIMAL(10,2)
 DETERMINISTIC
 BEGIN
@@ -20,7 +24,11 @@ FROM CLIENTE;
 
 -- calcula o valor total de uma venda
 DELIMITER //
+<<<<<<< HEAD
 CREATE FUNCTION ValorTotalVenda(p_id_doc_venda INT)
+=======
+CREATE FUNCTION ValorTotalVenda(p_id_doc_venda CHAR(15))
+>>>>>>> d010dca (criação controller e service fornecedor)
 RETURNS DECIMAL(10,2)
 DETERMINISTIC
 BEGIN
@@ -37,7 +45,11 @@ FROM DOCUMENTO_VENDA;
 
 -- calcula a quantidade total em estoque
 DELIMITER //
+<<<<<<< HEAD
 CREATE FUNCTION QuantidadeMaterialEstoque(p_id_material INT)
+=======
+CREATE FUNCTION QuantidadeMaterialEstoque(p_id_material CHAR(15))
+>>>>>>> d010dca (criação controller e service fornecedor)
 RETURNS INT
 DETERMINISTIC
 BEGIN
@@ -51,4 +63,8 @@ END //
 DELIMITER ;
 
 select id_material, QuantidadeMaterialEstoque(id_material) as MaterialEstoque
+<<<<<<< HEAD
 from Material;
+=======
+from MATERIAL;
+>>>>>>> d010dca (criação controller e service fornecedor)

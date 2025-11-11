@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 USE empresadereciclagem;
 
 
 -- VIEW: estoque_critico
 -- Objetivo: Identificar materiais cujo estoque está abaixo do nível mínimo.
+=======
+USE EmpresaDeReciclagem;
+
+
+-- VIEW: estoque_critico
+-- Objetivo: Identificar materiais cujo ESTOQUE está abaixo do nível mínimo.
+>>>>>>> d010dca (criação controller e service fornecedor)
 CREATE OR REPLACE VIEW estoque_critico AS
 SELECT 
     e.id_estoque,
@@ -12,9 +20,15 @@ SELECT
     m.id_material,
     m.tipo,
     m.descricao
+<<<<<<< HEAD
 FROM estoque e
 JOIN estoque_armazena_material eam ON e.id_estoque = eam.id_estoque
 JOIN material m ON eam.id_material = m.id_material
+=======
+FROM ESTOQUE e
+JOIN ESTOQUE_ARMAZENA_MATERIAL eam ON e.id_estoque = eam.id_estoque
+JOIN MATERIAL m ON eam.id_material = m.id_material
+>>>>>>> d010dca (criação controller e service fornecedor)
 WHERE e.nivel_atual < e.nivel_minimo;
 
 SELECT * FROM estoque_critico;
@@ -26,7 +40,11 @@ CREATE OR REPLACE VIEW funcionario_por_cargo AS
 SELECT 
     f.cargo,
     COUNT(f.id_funcionario) AS total_funcionarios
+<<<<<<< HEAD
 FROM funcionario f
+=======
+FROM FUNCIONARIO f
+>>>>>>> d010dca (criação controller e service fornecedor)
 GROUP BY f.cargo
 ORDER BY total_funcionarios DESC;
 
@@ -43,13 +61,21 @@ SELECT
     CONCAT(SUBSTRING(c.cpf_cnpj,1,3), '.***.***-', SUBSTRING(c.cpf_cnpj,-2)) AS cpf_mascarado,
     c.telefone,
     c.email
+<<<<<<< HEAD
 FROM cliente c;
+=======
+FROM CLIENTE c;
+>>>>>>> d010dca (criação controller e service fornecedor)
 
 SELECT * FROM dados_clientes;
 
 
 -- VIEW: material_estoque
+<<<<<<< HEAD
 -- Objetivo: Mostrar a localização exata de cada material no estoque.
+=======
+-- Objetivo: Mostrar a localização exata de cada MATERIAL no ESTOQUE.
+>>>>>>> d010dca (criação controller e service fornecedor)
 CREATE OR REPLACE VIEW material_estoque AS
 SELECT 
     e.id_estoque,
@@ -59,9 +85,15 @@ SELECT
     m.descricao,
     e.nivel_atual,
     e.capacidade
+<<<<<<< HEAD
 FROM estoque e
 JOIN estoque_armazena_material eam ON e.id_estoque = eam.id_estoque
 JOIN material m ON eam.id_material = m.id_material
+=======
+FROM ESTOQUE e
+JOIN ESTOQUE_ARMAZENA_MATERIAL eam ON e.id_estoque = eam.id_estoque
+JOIN MATERIAL m ON eam.id_material = m.id_material
+>>>>>>> d010dca (criação controller e service fornecedor)
 ORDER BY e.localizacao;
 
 SELECT * FROM material_estoque;
@@ -75,10 +107,17 @@ SELECT
     dc.data AS data_coleta,
     dc.local,
     f.nome AS funcionario_responsavel,
+<<<<<<< HEAD
     fr.nome AS fornecedor
 FROM documento_coleta dc
 JOIN funcionario f ON dc.id_funcionario = f.id_funcionario
 JOIN fornecedor fr ON dc.id_fornecedor = fr.id_fornecedor
+=======
+    fr.nome AS FORNECEDOR
+FROM DOCUMENTO_COLETA dc
+JOIN FUNCIONARIO f ON dc.id_funcionario = f.id_funcionario
+JOIN FORNECEDOR fr ON dc.id_fornecedor = fr.id_fornecedor
+>>>>>>> d010dca (criação controller e service fornecedor)
 ORDER BY dc.data DESC;
 
 SELECT * FROM coleta;
@@ -92,8 +131,13 @@ SELECT
     MONTH(dc.data) AS mes,
     COUNT(dc.id_doc_coleta) AS total_coletas,
     SUM(dcm.quantidade) AS total_material_coletado
+<<<<<<< HEAD
 FROM documento_coleta dc
 JOIN doc_coleta_contem_material dcm ON dc.id_doc_coleta = dcm.id_doc_coleta
+=======
+FROM DOCUMENTO_COLETA dc
+JOIN DOC_COLETA_CONTEM_MATERIAL dcm ON dc.id_doc_coleta = dcm.id_doc_coleta
+>>>>>>> d010dca (criação controller e service fornecedor)
 GROUP BY ano, mes
 ORDER BY ano DESC, mes DESC;
 
@@ -108,7 +152,11 @@ SELECT
     MONTH(dv.data) AS mes,
     COUNT(dv.id_doc_venda) AS total_vendas,
     SUM(dv.valor) AS valor_total_vendido
+<<<<<<< HEAD
 FROM documento_venda dv
+=======
+FROM DOCUMENTO_VENDA dv
+>>>>>>> d010dca (criação controller e service fornecedor)
 GROUP BY YEAR(dv.data), MONTH(dv.data)
 ORDER BY ano DESC, mes DESC;
 

@@ -1,5 +1,18 @@
 use EmpresaDeReciclagem;
 
+<<<<<<< HEAD
+=======
+-- id de usuário
+DELIMITER //
+CREATE FUNCTION gerar_id_grupo()
+RETURNS CHAR(8)
+DETERMINISTIC
+BEGIN
+    RETURN CONCAT('GRP', LPAD(FLOOR(RAND() * 9999), 4, '0'));
+END //
+DELIMITER ;
+
+>>>>>>> d010dca (criação controller e service fornecedor)
 -- id de grupo de usuário
 DELIMITER //
 CREATE FUNCTION gerar_id_usuario()

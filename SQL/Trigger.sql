@@ -6,14 +6,22 @@ USE EmpresaDeReciclagem;
 
 DELIMITER $$
 CREATE TRIGGER verifica_espaco_estoque
+<<<<<<< HEAD
 BEFORE INSERT ON estoque_armazenA_material
+=======
+BEFORE INSERT ON ESTOQUE_ARMAZENA_MATERIAL
+>>>>>>> d010dca (criação controller e service fornecedor)
 FOR EACH ROW
 BEGIN
     DECLARE capacidade_max INT;
     DECLARE nivel_atual INT;
 
     SELECT capacidade, nivel_atual INTO capacidade_max, nivel_atual
+<<<<<<< HEAD
     FROM estoque
+=======
+    FROM ESTOQUE
+>>>>>>> d010dca (criação controller e service fornecedor)
     WHERE id_estoque = NEW.id_estoque;
 
     IF nivel_atual + 1 > capacidade_max THEN
@@ -30,10 +38,17 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER atualiza_nivel_estoque
+<<<<<<< HEAD
 AFTER INSERT ON estoque_armazenA_material
 FOR EACH ROW
 BEGIN
     UPDATE estoque
+=======
+AFTER INSERT ON ESTOQUE_ARMAZENA_MATERIAL
+FOR EACH ROW
+BEGIN
+    UPDATE ESTOQUE
+>>>>>>> d010dca (criação controller e service fornecedor)
     SET nivel_atual = nivel_atual + 1
     WHERE id_estoque = NEW.id_estoque;
 END$$
@@ -45,10 +60,17 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER impede_exclusao_fornecedor
+<<<<<<< HEAD
 BEFORE DELETE ON fornecedor
 FOR EACH ROW
 BEGIN
     IF EXISTS (SELECT 1 FROM documento_coleta WHERE id_fornecedor = OLD.id_fornecedor) THEN
+=======
+BEFORE DELETE ON FORNECEDOR
+FOR EACH ROW
+BEGIN
+    IF EXISTS (SELECT 1 FROM DOCUMENTO_COLETA WHERE id_fornecedor = OLD.id_fornecedor) THEN
+>>>>>>> d010dca (criação controller e service fornecedor)
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Não é permitido excluir fornecedor com documentos de coleta.';
     END IF;
@@ -60,7 +82,11 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER verifica_preco_minimo
+<<<<<<< HEAD
 BEFORE UPDATE ON material
+=======
+BEFORE UPDATE ON MATERIAL
+>>>>>>> d010dca (criação controller e service fornecedor)
 FOR EACH ROW
 BEGIN
     IF NEW.preco_kg < 0.1 THEN
@@ -77,10 +103,17 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER verifica_cpf_duplicado_cliente
+<<<<<<< HEAD
 BEFORE INSERT ON cliente
 FOR EACH ROW
 BEGIN
     IF EXISTS (SELECT 1 FROM cliente WHERE cpf_cnpj = NEW.cpf_cnpj) THEN
+=======
+BEFORE INSERT ON CLIENTE
+FOR EACH ROW
+BEGIN
+    IF EXISTS (SELECT 1 FROM CLIENTE WHERE cpf_cnpj = NEW.cpf_cnpj) THEN
+>>>>>>> d010dca (criação controller e service fornecedor)
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Cliente com CPF/CNPJ já cadastrado.';
     END IF;

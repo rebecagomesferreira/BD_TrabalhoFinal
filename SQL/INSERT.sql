@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 use empresadereciclagem;
+=======
+USE EmpresaDeReciclagem;
+>>>>>>> d010dca (criação controller e service fornecedor)
 --
 -- INSERTS: Entidades Independentes
 --
@@ -142,6 +146,7 @@ SELECT * FROM DOCUMENTO_COLETA;
 INSERT INTO FORNECEDOR_FORNECE_MATERIAL (id_fornecedor, id_material, id_doc_coleta) VALUES
 ((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'), 
 (SELECT id_material FROM MATERIAL WHERE tipo='Plástico'), 
+<<<<<<< HEAD
 (SELECT id_doc_coleta FROM Documento_Coleta WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'))),
 
 ((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'), 
@@ -179,10 +184,50 @@ INSERT INTO FORNECEDOR_FORNECE_MATERIAL (id_fornecedor, id_material, id_doc_cole
 ((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'), 
 (SELECT id_material FROM MATERIAL WHERE tipo='Orgânico'), 
 (SELECT id_doc_coleta FROM Documento_Coleta WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')));
+=======
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Papel'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Metal'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-21' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Vidro'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-21' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='João da Silva'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Orgânico'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-22' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='João da Silva'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais'),
+(SELECT id_material FROM MATERIAL WHERE tipo='Plástico'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-23' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Metal'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-23' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Papel'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Vidro'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'))),
+
+((SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira'), 
+(SELECT id_material FROM MATERIAL WHERE tipo='Orgânico'), 
+(SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')));
+>>>>>>> d010dca (criação controller e service fornecedor)
 SELECT * FROM FORNECEDOR_FORNECE_MATERIAL;
 
 -- Corrigido: Usando 'data' + 'nome' (para doc), 'tipo' (para material) e 'nome' (para func)
 INSERT INTO DOC_COLETA_CONTEM_MATERIAL (id_doc_coleta, id_material, id_funcionario, quantidade) VALUES
+<<<<<<< HEAD
 ((SELECT id_doc_coleta FROM Documento_Coleta WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA')), 
 (SELECT id_material FROM Material WHERE tipo = 'Plástico'), 
 (SELECT id_funcionario FROM Funcionario WHERE nome = 'Ana Souza'), 100),
@@ -222,6 +267,47 @@ INSERT INTO DOC_COLETA_CONTEM_MATERIAL (id_doc_coleta, id_material, id_funcionar
 ((SELECT id_doc_coleta FROM Documento_Coleta WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')), 
 (SELECT id_material FROM Material WHERE tipo = 'Orgânico'), 
 (SELECT id_funcionario FROM Funcionario WHERE nome = 'Marcos Pinto'), 40);
+=======
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 100),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-20' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Reciclagem Brasil LTDA')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 200),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-21' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 150), 
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-21' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Coleta Sustentável')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 80),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-22' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='João da Silva')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Fernanda Costa'), 50), 
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-23' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 120),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-23' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='EcoMateriais')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 90),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'), 60),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'),
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'), 70),
+
+((SELECT id_doc_coleta FROM DOCUMENTO_COLETA WHERE data = '2025-09-24' AND id_fornecedor = (SELECT id_fornecedor FROM FORNECEDOR WHERE nome='Maria Oliveira')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), 
+(SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'), 40);
+>>>>>>> d010dca (criação controller e service fornecedor)
 SELECT * FROM DOC_COLETA_CONTEM_MATERIAL;
 
 
@@ -258,6 +344,7 @@ SELECT * FROM DOCUMENTO_VENDA;
 -- Corrigido: Usando 'data' + 'nome' (para doc) e 'tipo' (para material)
 INSERT INTO ITEM_VENDA (id_doc_venda, id_material, quantidade, preco_kg) VALUES
 ( (SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-21' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Empresa Verde LTDA')), 
+<<<<<<< HEAD
 (SELECT id_material FROM Material WHERE tipo = 'Plástico'), 
 50, 2.50),
 
@@ -295,11 +382,51 @@ INSERT INTO ITEM_VENDA (id_doc_venda, id_material, quantidade, preco_kg) VALUES
 
 ((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-25' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Carlos Nunes')), 
 (SELECT id_material FROM Material WHERE tipo = 'Orgânico'), 
+=======
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), 
+50, 2.50),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-21' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Empresa Verde LTDA')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), 
+100, 1.20),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-22' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='João Martins')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), 
+60, 5.00),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-22' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='João Martins')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'), 
+40, 3.00),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-23' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Lara Gomes')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), 
+50, 0.80),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-23' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Lara Gomes')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico'), 
+70, 2.50),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-24' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Eco Brasil')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal'), 
+50, 5.00),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-25' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Carlos Nunes')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel'), 
+80, 1.20),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-25' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Carlos Nunes')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro'), 
+60, 3.00),
+
+((SELECT id_doc_venda FROM DOCUMENTO_VENDA WHERE data = '2025-09-25' AND id_cliente = (SELECT id_cliente FROM CLIENTE WHERE nome='Carlos Nunes')), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'), 
+>>>>>>> d010dca (criação controller e service fornecedor)
 30, 0.80);
 SELECT * FROM ITEM_VENDA;
 
 -- Corrigido: Usando 'nome' para funcionario e 'nome' para cliente
 INSERT INTO FUNCIONARIO_ATENDE_CLIENTE (id_funcionario, id_cliente) VALUES
+<<<<<<< HEAD
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Fernanda Costa'), 
 (SELECT id_cliente FROM CLIENTE WHERE nome = 'Empresa Verde LTDA')),
 
@@ -313,12 +440,28 @@ INSERT INTO FUNCIONARIO_ATENDE_CLIENTE (id_funcionario, id_cliente) VALUES
 (SELECT id_cliente FROM CLIENTE WHERE nome = 'Eco Brasil')),
 
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Roberto Lima'), 
+=======
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Fernanda Costa'), 
+(SELECT id_cliente FROM CLIENTE WHERE nome = 'Empresa Verde LTDA')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Fernanda Costa'), 
+(SELECT id_cliente FROM CLIENTE WHERE nome = 'João Martins')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'), 
+(SELECT id_cliente FROM CLIENTE WHERE nome = 'Lara Gomes')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 
+(SELECT id_cliente FROM CLIENTE WHERE nome = 'Eco Brasil')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 
+>>>>>>> d010dca (criação controller e service fornecedor)
 (SELECT id_cliente FROM CLIENTE WHERE nome = 'Carlos Nunes'));
 SELECT * FROM FUNCIONARIO_ATENDE_CLIENTE;
 
 
 
 INSERT INTO FUNCIONARIO_RECEBE_MATERIAL (id_funcionario, id_material) VALUES
+<<<<<<< HEAD
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Ana Souza'), 
 (SELECT id_material FROM Material WHERE tipo = 'Plástico')),
 
@@ -333,11 +476,28 @@ INSERT INTO FUNCIONARIO_RECEBE_MATERIAL (id_funcionario, id_material) VALUES
 
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Fernanda Costa'), 
 (SELECT id_material FROM Material WHERE tipo = 'Orgânico'));
+=======
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Fernanda Costa'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'));
+>>>>>>> d010dca (criação controller e service fornecedor)
 SELECT * FROM FUNCIONARIO_RECEBE_MATERIAL;
 
 
 -- Corrigido: Usando 'nome' para funcionario e 'tipo' para material
 INSERT INTO FUNCIONARIO_SEPARA_MATERIAL (id_funcionario, id_material) VALUES
+<<<<<<< HEAD
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Roberto Lima'), 
 (SELECT id_material FROM Material WHERE tipo = 'Plástico')),
 
@@ -352,6 +512,22 @@ INSERT INTO FUNCIONARIO_SEPARA_MATERIAL (id_funcionario, id_material) VALUES
 
 ((SELECT id_funcionario FROM Funcionario WHERE nome = 'Marcos Pinto'),
 (SELECT id_material FROM Material WHERE tipo = 'Orgânico'));
+=======
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Plástico')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Roberto Lima'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Papel')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Ana Souza'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Metal')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Fernanda Costa'), 
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Vidro')),
+
+((SELECT id_funcionario FROM FUNCIONARIO WHERE nome = 'Marcos Pinto'),
+(SELECT id_material FROM MATERIAL WHERE tipo = 'Orgânico'));
+>>>>>>> d010dca (criação controller e service fornecedor)
 SELECT * FROM FUNCIONARIO_SEPARA_MATERIAL;
 
 
