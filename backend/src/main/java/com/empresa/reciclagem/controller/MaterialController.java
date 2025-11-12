@@ -21,9 +21,9 @@ public class MaterialController {
     public ResponseEntity<List<Material>> findAll() {
         return ResponseEntity.ok(materialService.findAll());
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<Material> findById(@PathVariable String id) {
+    public ResponseEntity<Material> findById(@PathVariable Long id) {
         return ResponseEntity.ok(materialService.findById(id));
     }
     
@@ -36,15 +36,23 @@ public class MaterialController {
     public ResponseEntity<Material> create(@RequestBody Material material) {
         return ResponseEntity.status(HttpStatus.CREATED).body(materialService.save(material));
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<Material> update(@PathVariable String id, @RequestBody Material material) {
-        material.setIdMaterial(id);
-        return ResponseEntity.ok(materialService.save(material));
+    public ResponseEntity<Material> update(@PathVariable Long id, @RequestBody Material materialAtualizado) {
+        Material existente = materialService.findById(id);
+
+        // Atualiza apenas os campos permitidos
+        existente.setTipo(materialAtualizado.getTipo());
+        existente.setDescricao(materialAtualizado.getDescricao());
+        existente.setPrecoKg(materialAtualizado.getPrecoKg());
+
+        Material salvo = materialService.save(existente);
+        return ResponseEntity.ok(salvo);
     }
-    
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         materialService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

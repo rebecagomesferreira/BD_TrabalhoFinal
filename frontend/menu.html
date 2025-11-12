@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 350px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .logout {
+      background-color: #f44336;
+    }
+
+    .logout:hover {
+      background-color: #e53935;
+    }
+
+    .menu-section {
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="titulo">Bem-vindo</h1>
+
+    <div id="menuAdm" class="menu-section hidden">
+      <button onclick="abrirPagina('usuarios.html')">Gerenciar Usuários</button>
+      <button onclick="abrirPagina('materiais.html')">Gerenciar Materiais</button>
+      <button onclick="abrirPagina('fornecedores.html')">Gerenciar Fornecedores</button>
+      <button onclick="abrirPagina('relatorios.html')">Relatórios</button>
+      <button onclick="abrirPagina('config.html')">Configurações</button>
+    </div>
+
+    <div id="menuGer" class="menu-section hidden">
+      <button onclick="abrirPagina('materiais.html')">Ver Materiais</button>
+      <button onclick="abrirPagina('fornecedores.html')">Ver Fornecedores</button>
+      <button onclick="abrirPagina('relatorios.html')">Relatórios</button>
+    </div>
+
+    <div id="menuOpe" class="menu-section hidden">
+      <button onclick="abrirPagina('materiais.html')">Registrar Entrada/Saída</button>
+      <button onclick="abrirPagina('fornecedores.html')">Consultar Fornecedores</button>
+    </div>
+
+    <div id="menuVis" class="menu-section hidden">
+      <button onclick="abrirPagina('relatorios.html')">Ver Relatórios</button>
+    </div>
+
+    <button class="logout" onclick="logout()">Sair</button>
+  </div>
+
+  <script>
+    const grupo = localStorage.getItem("grupo");
+    const nomeUsuario = localStorage.getItem("usuario");
+    const titulo = document.getElementById("titulo");
+
+    // Exibe o grupo e nome no topo
+    titulo.textContent = `Bem-vindo, ${nomeUsuario} (${grupo})`;
+
+    // Mostra o menu correto
+    if (grupo === "Administrador") {
+      document.getElementById("menuAdm").classList.remove("hidden");
+    } else if (grupo === "Gerente") {
+      document.getElementById("menuGer").classList.remove("hidden");
+    } else if (grupo === "Operador") {
+      document.getElementById("menuOpe").classList.remove("hidden");
+    } else if (grupo === "Visualizador") {
+      document.getElementById("menuVis").classList.remove("hidden");
+    }
+
+    function abrirPagina(pagina) {
+      window.location.href = pagina;
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
