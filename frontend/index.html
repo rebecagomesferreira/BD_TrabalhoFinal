@@ -1,30 +1,45 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link rel="stylesheet" href="style.css"><title>Login</title></head>
-<body><div class="container">
-<h1>Login</h1>
-<input id='usuario' placeholder='Usuário'>
-<input id='senha' type='password' placeholder='Senha'>
-<button onclick="login()">Entrar</button>
-<div class='link'><a href='registrar.html'>Criar conta</a></div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <form id="loginForm" autocomplete="on">
+        <input id="usuario" name="usuario" type="text" placeholder="Usuário" autocomplete="username" required>
+        <input id="senha" name="senha" type="password" placeholder="Senha" autocomplete="current-password" required>
+        <button type="submit">Entrar</button>
+    </form>
+    <div class="link"><a href="registrar.html">Criar conta</a></div>
+</div>
+
 <script>
-async function login() {
-  let r = await fetch("http://localhost:8080/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nomeUsuario: usuario.value, senha: senha.value })
-  });
-  
-  if (r.ok) {
-    let dados = await r.json();
-    localStorage.setItem("usuario", usuario.value);
-    localStorage.setItem("grupo", dados.grupo);
-    location.href = "menu.html";
-  } else {
-    alert("Usuário ou senha inválidos!");
-  }
-}
+    const form = document.getElementById('loginForm');
 
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // evita recarregar a página
+
+        const usuario = form.usuario.value;
+        const senha = form.senha.value;
+
+        let r = await fetch("http://localhost:8080/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nomeUsuario: usuario, senha: senha })
+        });
+
+        if (r.ok) {
+            let dados = await r.json();
+            localStorage.setItem("usuario", usuario);
+            localStorage.setItem("grupo", dados.grupo);
+            location.href = "menu.html";
+        } else {
+            alert("Usuário ou senha inválidos!");
+        }
+    });
 </script>
-
-
-</div></body></html>
+</body>
+</html>

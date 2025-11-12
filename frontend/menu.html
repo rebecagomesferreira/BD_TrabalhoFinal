@@ -1,124 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
-  <title>Menu</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Menu</title>
+    <style>
+        .menu-section {
+            margin-top: 15px;
+        }
 
-    .container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 350px;
-    }
+        .hidden {
+            display: none;
+        }
 
-    h1 {
-      color: #333;
-    }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #2f6b2f;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        button:hover {
+            background: #245524;
+        }
 
-    button:hover {
-      background-color: #45a049;
-    }
+        .logout {
+            background: #b83232;
+        }
 
-    .logout {
-      background-color: #f44336;
-    }
+        .logout:hover {
+            background: #8b2424;
+        }
 
-    .logout:hover {
-      background-color: #e53935;
-    }
-
-    .menu-section {
-      margin-top: 20px;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+        h2 {
+            color: #2f6b2f;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <h1 id="titulo">Bem-vindo</h1>
+    <h2 id="cargo"></h2>
 
+    <!-- ADMINISTRADOR -->
     <div id="menuAdm" class="menu-section hidden">
-      <button onclick="abrirPagina('usuarios.html')">Gerenciar Usuários</button>
-      <button onclick="abrirPagina('materiais.html')">Gerenciar Materiais</button>
-      <button onclick="abrirPagina('fornecedores.html')">Gerenciar Fornecedores</button>
-      <button onclick="abrirPagina('relatorios.html')">Relatórios</button>
-      <button onclick="abrirPagina('config.html')">Configurações</button>
+        <button onclick="abrirPagina('usuarios.html')">👑 Gerenciar Usuários</button>
+        <button onclick="abrirPagina('funcionarios.html')">🧰 Gerenciar Funcionários</button>
+        <button onclick="abrirPagina('fornecedores.html')">🏢 Gerenciar Fornecedores</button>
+        <button onclick="abrirPagina('materiais.html')">🧾 Gerenciar Materiais</button>
+        <button onclick="abrirPagina('relatorios.html')">📊 Relatórios Gerais</button>
+        <button onclick="abrirPagina('config.html')">⚙ Configurações do Sistema</button>
+        <button onclick="abrirPagina('logs.html')">🗂 Logs / Auditoria</button>
     </div>
 
+    <!-- GERENTE -->
     <div id="menuGer" class="menu-section hidden">
-      <button onclick="abrirPagina('materiais.html')">Ver Materiais</button>
-      <button onclick="abrirPagina('fornecedores.html')">Ver Fornecedores</button>
-      <button onclick="abrirPagina('relatorios.html')">Relatórios</button>
+        <button onclick="abrirPagina('materiais.html')">🧾 Gerenciar Materiais</button>
+        <button onclick="abrirPagina('fornecedores.html')">📦 Ver Fornecedores</button>
+        <button onclick="abrirPagina('relatorios.html')">📊 Relatórios de Desempenho</button>
+        <button onclick="abrirPagina('funcionarios.html')">👥 Acompanhar Funcionários</button>
     </div>
 
+    <!-- FUNCIONÁRIO -->
     <div id="menuOpe" class="menu-section hidden">
-      <button onclick="abrirPagina('materiais.html')">Registrar Entrada/Saída</button>
-      <button onclick="abrirPagina('fornecedores.html')">Consultar Fornecedores</button>
+        <button onclick="abrirPagina('entrada.html')">📦 Registrar Entrada de Materiais</button>
+        <button onclick="abrirPagina('saida.html')">🚚 Registrar Saída / Reciclagem</button>
+        <button onclick="abrirPagina('fornecedores.html')">📋 Consultar Fornecedores</button>
+        <button onclick="abrirPagina('relatorios.html')">📈 Ver Relatórios Simples</button>
     </div>
 
+    <!-- CLIENTE -->
     <div id="menuVis" class="menu-section hidden">
-      <button onclick="abrirPagina('relatorios.html')">Ver Relatórios</button>
+        <button onclick="abrirPagina('materiais.html')">📄 Ver Materiais Reciclados</button>
+        <button onclick="abrirPagina('fornecedores.html')">🧾 Ver Fornecedores</button>
+        <button onclick="abrirPagina('relatorios.html')">📊 Ver Relatório Pessoal</button>
     </div>
 
     <button class="logout" onclick="logout()">Sair</button>
-  </div>
+</div>
 
-  <script>
+<script>
     const grupo = localStorage.getItem("grupo");
     const nomeUsuario = localStorage.getItem("usuario");
+
     const titulo = document.getElementById("titulo");
+    const cargo = document.getElementById("cargo");
 
-    // Exibe o grupo e nome no topo
-    titulo.textContent = `Bem-vindo, ${nomeUsuario} (${grupo})`;
+    titulo.textContent = `Bem-vindo, ${nomeUsuario || "Usuário"}`;
 
-    // Mostra o menu correto
-    if (grupo === "Administrador") {
-      document.getElementById("menuAdm").classList.remove("hidden");
-    } else if (grupo === "Gerente") {
-      document.getElementById("menuGer").classList.remove("hidden");
-    } else if (grupo === "Operador") {
-      document.getElementById("menuOpe").classList.remove("hidden");
-    } else if (grupo === "Visualizador") {
-      document.getElementById("menuVis").classList.remove("hidden");
+    // Mostra o menu correto de acordo com o grupo salvo
+    switch (grupo) {
+        case "ADM":
+        case "Administrador":
+            cargo.textContent = "👑 Administrador";
+            document.getElementById("menuAdm").classList.remove("hidden");
+            break;
+
+        case "GER":
+        case "Gerente":
+            cargo.textContent = "💼 Gerente";
+            document.getElementById("menuGer").classList.remove("hidden");
+            break;
+
+        case "OPE":
+        case "Operador":
+        case "Funcionario":
+        case "Funcionário":
+            cargo.textContent = "🧰 Funcionário";
+            document.getElementById("menuOpe").classList.remove("hidden");
+            break;
+
+        case "VIS":
+        case "Visualizador":
+        case "Cliente":
+            cargo.textContent = "💼 Cliente";
+            document.getElementById("menuVis").classList.remove("hidden");
+            break;
+
+        default:
+            cargo.textContent = "Grupo desconhecido";
+            alert("Grupo de usuário desconhecido. Faça login novamente.");
+            localStorage.clear();
+            location.href = "index.html";
+            break;
     }
 
     function abrirPagina(pagina) {
-      window.location.href = pagina;
+        window.location.href = pagina;
     }
 
     function logout() {
-      localStorage.clear();
-      location.href = "index.html";
+        localStorage.clear();
+        location.href = "index.html";
     }
-  </script>
+</script>
 </body>
 </html>
