@@ -13,11 +13,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Material {
-    
+
     @Id
-    @Column(name = "id_material", length = 15)
-    private String idMaterial;
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_material")
+    private Long idMaterial;
+
     @Column(name = "tipo", length = 30, nullable = false)
     private String tipo;
     

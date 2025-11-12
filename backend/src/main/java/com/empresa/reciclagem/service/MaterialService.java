@@ -17,8 +17,8 @@ public class MaterialService {
     public List<Material> findAll() {
         return materialRepository.findAll();
     }
-    
-    public Material findById(String id) {
+
+    public Material findById(Long id) {
         return materialRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Material não encontrado: " + id));
     }
@@ -31,9 +31,9 @@ public class MaterialService {
     public Material save(Material material) {
         return materialRepository.save(material);
     }
-    
+
     @Transactional
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         materialRepository.deleteById(id);
     }
 }
