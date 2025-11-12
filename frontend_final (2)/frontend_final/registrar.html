@@ -1,19 +1,122 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link rel="stylesheet" href="style.css"><title>Registrar</title></head>
-<body><div class="container">
-<h1>Criar Conta</h1>
-<input id='usuario' placeholder='Usuário'>
-<input id='senha' type='password' placeholder='Senha'>
-<button onclick="reg()">Registrar</button>
-<div class='link'><a href='index.html'>Voltar</a></div>
-<script>
-async function reg(){
-  let r = await fetch("http://localhost:8080/api/usuarios",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({usuario:usuario.value, senha:senha.value})
-  });
-  if(r.ok){ alert("Conta criada!"); location.href='index.html'; }
-}
-</script>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Registrar Conta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 95%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .link {
+      margin-top: 15px;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Criar Conta</h1>
+
+    <input id="usuario" placeholder="Usuário">
+    <input id="senha" type="password" placeholder="Senha">
+
+    <select id="grupo">
+      <option value="">Selecione o tipo de conta</option>
+      <option value="ADM">Administrador</option>
+      <option value="GER">Gerente</option>
+      <option value="OPE">Funcionário</option>
+      <option value="VIS">Cliente</option>
+    </select>
+
+    <button onclick="reg()">Registrar</button>
+    <div class="link"><a href="index.html">Voltar ao login</a></div>
+
+    <script>
+      async function reg() {
+        if (!usuario.value || !senha.value || !grupo.value) {
+          alert("Preencha todos os campos!");
+          return;
+        }
+
+        try {
+          let resposta = await fetch("http://localhost:8080/auth/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nomeUsuario: usuario.value,
+              senha: senha.value,
+              grupo: { idGrupo: grupo.value }
+            })
+          });
+
+          if (resposta.ok) {
+            alert("Conta criada com sucesso!");
+            location.href = "index.html";
+          } else {
+            let msg = await resposta.text();
+            alert("Erro ao criar conta: " + msg);
+          }
+        } catch (e) {
+          alert("Erro de conexão com o servidor: " + e.message);
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>
