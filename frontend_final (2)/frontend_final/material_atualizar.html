@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Atualizar Material</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Atualizar Material</h1>
+    ID: <input id="id"><br>
+    Tipo: <input id="tipo"><br>
+    Descrição: <input id="descricao"><br>
+    Preço por Kg: <input id="precoKg" type="number" step="0.01"><br>
+
+    <button onclick="att()">Atualizar</button>
+    <button onclick="location.href='material_menu.html'">Voltar</button>
+
+    <script>
+      async function att() {
+        let body = {
+          tipo: tipo.value,
+          descricao: descricao.value,
+          precoKg: parseFloat(precoKg.value)
+        };
+
+        let r = await fetch("http://localhost:8080/api/materiais/" + id.value, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        if (r.ok) alert("Material atualizado!");
+        else alert("Erro ao atualizar material.");
+      }
+    </script>
+  </div>
+</body>
+</html>

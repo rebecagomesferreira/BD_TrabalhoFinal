@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>Listar Materiais</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Materiais</h1>
+    <button onclick="load()">Recarregar</button>
+    <div id="lista"></div>
+    <button onclick="location.href='material_menu.html'">Voltar</button>
+
+    <script>
+      async function load() {
+        let r = await fetch("http://localhost:8080/api/materiais");
+        let data = await r.json();
+
+        lista.innerHTML = data.map(x => `
+          <div class="data-box">
+            <b>ID:</b> ${x.idMaterial}<br>
+            <b>Tipo:</b> ${x.tipo}<br>
+            <b>Descrição:</b> ${x.descricao}<br>
+            <b>Preço/kg:</b> R$ ${x.precoKg.toFixed(2)}<br>
+          </div>
+        `).join("");
+      }
+
+      load();
+    </script>
+  </div>
+</body>
+</html>

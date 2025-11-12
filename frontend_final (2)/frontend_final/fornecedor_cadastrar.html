@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="style.css"><title>Cadastrar fornecedor</title></head>
+<body><div class="container">
+<h1>Cadastrar Fornecedor</h1>
+Documento: <input id='documento'><br>Nome: <input id='nome'><br>Telefone: <input id='telefone'><br>Tipo:<select id='tipo'><option value='FISICA'>Física</option><option value='JURIDICA'>Jurídica</option></select><br>
+<button onclick="salvar()">Salvar</button>
+<button onclick="location.href='fornecedor_menu.html'">Voltar</button>
+<script>
+async function salvar(){
+  let body={ documento:documento.value,nome:nome.value,telefone:telefone.value,tipo:tipo.value };
+  let r = await fetch("http://localhost:8080/fornecedors", {
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(body)
+});
+
+}
+</script>
+</div></body></html>

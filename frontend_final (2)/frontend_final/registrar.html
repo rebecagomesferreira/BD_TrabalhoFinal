@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="style.css"><title>Registrar</title></head>
+<body><div class="container">
+<h1>Criar Conta</h1>
+<input id='usuario' placeholder='Usuário'>
+<input id='senha' type='password' placeholder='Senha'>
+<button onclick="reg()">Registrar</button>
+<div class='link'><a href='index.html'>Voltar</a></div>
+<script>
+async function reg(){
+  let r = await fetch("http://localhost:8080/api/usuarios",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({usuario:usuario.value, senha:senha.value})
+  });
+  if(r.ok){ alert("Conta criada!"); location.href='index.html'; }
+}
+</script>
+</div></body></html>

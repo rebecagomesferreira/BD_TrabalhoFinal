@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="style.css"><title>Excluir</title></head>
+<body><div class="container">
+<h1>Excluir Fornecedor</h1>
+ID:<input id='id'><br>
+<button onclick="del()">Excluir</button>
+<button onclick="location.href='fornecedor_menu.html'">Voltar</button>
+<script>
+async function del(){
+  let r = await fetch("http://localhost:8080/api/fornecedores"+id.value,{method:"DELETE"});
+  if(r.ok) alert("Excluído!");
+  else alert("Erro ao excluir");
+}
+</script>
+</div></body></html>
