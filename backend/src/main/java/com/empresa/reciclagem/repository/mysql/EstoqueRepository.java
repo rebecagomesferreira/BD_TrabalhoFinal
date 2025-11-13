@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
+
     @Query("SELECT e FROM Estoque e WHERE e.nivelAtual < e.nivelMinimo")
     List<Estoque> findEstoqueBaixo();
 }

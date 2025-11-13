@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/BD_TrabalhoFinal.iml" filepath="$PROJECT_DIR$/.idea/BD_TrabalhoFinal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java_bd-final-entrega/EcoCode6.iml" filepath="$PROJECT_DIR$/java_bd-final-entrega/EcoCode6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BD_TrabalhoFinal/BD_TrabalhoFinal-main/backend/reciclagem-api.iml" filepath="$PROJECT_DIR$/BD_TrabalhoFinal/BD_TrabalhoFinal-main/backend/reciclagem-api.iml" />
     </modules>
   </component>
 </project>

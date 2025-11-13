@@ -5,16 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3fe1e17-4ace-4556-82d5-dab3cb749fda" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BD_TrabalhoFinal/BD_TrabalhoFinal-main/backend/reciclagem-api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/FornecedorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/dto/RelatorioAdminDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/FornecedorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/menu.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/registrar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/registrar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/FuncionarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/FuncionarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/MaterialController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/controller/MaterialController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Fornecedor.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Fornecedor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Funcionario.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Funcionario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/GrupoUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/GrupoUsuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/model/mysql/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/ClienteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/DocumentoColetaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/DocumentoColetaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/DocumentoVendaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/DocumentoVendaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/EstoqueRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/EstoqueRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/FornecedorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/FornecedorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/FuncionarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/FuncionarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/GrupoUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/GrupoUsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/MaterialRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/MaterialRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/repository/mysql/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/FuncionarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/FuncionarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/MaterialService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/empresa/reciclagem/service/MaterialService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/ColetaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/ColetaController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/FuncionarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/FuncionarioController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/GerenteController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/GerenteController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/MaterialController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/controller/MaterialController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Cliente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Fornecedor.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Fornecedor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Funcionario.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Funcionario.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/GrupoUsuario.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/GrupoUsuario.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Usuario.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/model/mysql/Usuario.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/ClienteRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/ClienteRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/DocumentoColetaRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/DocumentoColetaRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/DocumentoVendaRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/DocumentoVendaRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/EstoqueRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/EstoqueRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/FornecedorRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/FornecedorRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/FuncionarioRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/FuncionarioRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/GrupoUsuarioRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/GrupoUsuarioRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/MaterialRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/MaterialRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/UsuarioRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/repository/mysql/UsuarioRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/AuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/AuthService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/FuncionarioService.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/FuncionarioService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/MaterialService.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/com/empresa/reciclagem/service/MaterialService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/fornecedor_atualizar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/fornecedor_atualizar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/fornecedor_cadastrar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/fornecedor_cadastrar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/fornecedor_excluir.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/fornecedor_excluir.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/fornecedor_listar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/fornecedor_listar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,6 +92,9 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="35DBsiDa3pe4s51Q8QWV0rXnyD7" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -49,6 +109,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ReciclagemApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",

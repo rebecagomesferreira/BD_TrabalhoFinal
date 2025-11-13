@@ -8,24 +8,20 @@ import com.empresa.reciclagem.model.mysql.Usuario;
 import com.empresa.reciclagem.repository.mongodb.LogAcessoRepository;
 import com.empresa.reciclagem.repository.mysql.GrupoUsuarioRepository;
 import com.empresa.reciclagem.repository.mysql.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private GrupoUsuarioRepository grupoUsuarioRepository;
-
-    @Autowired
-    private LogAcessoRepository logRepository;
+    private final UsuarioService usuarioService; // MUDEI: Use o Service ao invés do Repository
+    private final GrupoUsuarioRepository grupoUsuarioRepository;
+    private final LogAcessoRepository logRepository;
 
     // --- LOGIN ---
     public LoginResponse autenticar(LoginRequest request) {
-        var usuarioOpt = usuarioRepository.findByNomeUsuario(request.getNomeUsuario());
+        var usuarioOpt = usuarioService.findByNomeUsuario(request.getNomeUsuario()); // MUDEI: Use o Service
 
         if (usuarioOpt.isEmpty()) {
             return new LoginResponse(false, "Usuário não encontrado", null);
@@ -52,15 +48,15 @@ public class AuthService {
 
     // --- REGISTRO ---
     public boolean usuarioExiste(String nomeUsuario) {
-        return usuarioRepository.findByNomeUsuario(nomeUsuario).isPresent();
+        return usuarioService.findByNomeUsuario(nomeUsuario).isPresent(); // MUDEI: Use o Service
     }
 
     public GrupoUsuario buscarGrupo(String idGrupo) {
         return grupoUsuarioRepository.findById(idGrupo)
-                .orElseThrow(() -> new RuntimeException("Grupo inválido!"));
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado: " + idGrupo));
     }
 
     public void salvarUsuario(Usuario usuario) {
-        usuarioRepository.save(usuario);
+        usuarioService.salvar(usuario); // MUDEI: Use o Service
     }
 }

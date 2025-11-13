@@ -1,20 +1,45 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link rel="stylesheet" href="style.css"><title>Atualizar</title></head>
-<body><div class="container">
-<h1>Atualizar Fornecedor</h1>
-ID:<input id='id'><br>Documento: <input id='documento'><br>Nome: <input id='nome'><br>Telefone: <input id='telefone'><br>Tipo:<select id='tipo'><option value='FISICA'>Física</option><option value='JURIDICA'>Jurídica</option></select><br>
-<button onclick="att()">Atualizar</button>
-<button onclick="location.href='fornecedor_menu.html'">Voltar</button>
-<script>
-async function att(){
-  let body={ documento:documento.value,nome:nome.value,telefone:telefone.value,tipo:tipo.value };
-  let r = await fetch("http://localhost:8080/api/fornecedores"+id.value,{
-    method:"PUT",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(body)
-  });
-  if(r.ok) alert("Atualizado!");
-  else alert("Erro ao atualizar");
-}
-</script>
-</div></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Atualizar</title>
+</head>
+<body>
+<div class="container">
+    <h1>Atualizar Fornecedor</h1>
+    ID: <input id='id'><br>
+    Documento (CPF/CNPJ): <input id='documento'><br>
+    Nome: <input id='nome'><br>
+    Telefone: <input id='telefone'><br>
+    Tipo:
+    <select id='tipo'>
+        <option value='FISICA'>Física</option>
+        <option value='JURIDICA'>Jurídica</option>
+    </select><br>
+    <button onclick="att()">Atualizar</button>
+    <button onclick="location.href='fornecedor_menu.html'">Voltar</button>
+
+    <script>
+        async function att(){
+            let body = {
+                idFornecedor: id.value,
+                cpfCnpj: documento.value,
+                nome: nome.value,
+                telefone: telefone.value,
+                tipoFornecedor: tipo.value
+            };
+
+            let r = await fetch("http://localhost:8080/api/fornecedores/" + id.value, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body)
+            });
+
+            if (r.ok) alert("Atualizado!");
+            else alert("Erro ao atualizar");
+        }
+    </script>
+</div>
+</body>
+</html>

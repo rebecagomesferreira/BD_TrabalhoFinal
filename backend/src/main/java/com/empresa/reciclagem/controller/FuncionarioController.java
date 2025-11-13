@@ -14,37 +14,37 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FuncionarioController {
-    
+
     private final FuncionarioService funcionarioService;
-    
+
     @GetMapping
     public ResponseEntity<List<Funcionario>> findAll() {
         return ResponseEntity.ok(funcionarioService.findAll());
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<Funcionario> findById(@PathVariable String id) {
+    public ResponseEntity<Funcionario> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(funcionarioService.findById(id));
     }
-    
+
     @GetMapping("/cargo/{cargo}")
     public ResponseEntity<List<Funcionario>> findByCargo(@PathVariable String cargo) {
         return ResponseEntity.ok(funcionarioService.findByCargo(cargo));
     }
-    
+
     @PostMapping
     public ResponseEntity<Funcionario> create(@RequestBody Funcionario funcionario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.save(funcionario));
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<Funcionario> update(@PathVariable String id, @RequestBody Funcionario funcionario) {
+    public ResponseEntity<Funcionario> update(@PathVariable Integer id, @RequestBody Funcionario funcionario) {
         funcionario.setIdFuncionario(id);
         return ResponseEntity.ok(funcionarioService.save(funcionario));
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         funcionarioService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

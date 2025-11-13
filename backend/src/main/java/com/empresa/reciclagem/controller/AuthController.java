@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Map; // ← ADICIONE ESTE IMPORT
 
 @RestController
 @RequestMapping("/auth")
@@ -23,27 +24,40 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         LoginResponse response = authService.autenticar(request);
-
         if (!response.isAutenticado()) {
             return ResponseEntity.status(401).body(response);
         }
-
         return ResponseEntity.ok(response);
     }
 
     // --- REGISTRAR NOVO USUÁRIO ---
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> registrar(@RequestBody Map<String, Object> payload) {
         try {
+            String nomeUsuario = (String) payload.get("nomeUsuario");
+            String senha = (String) payload.get("senha");
+            String idGrupo = (String) payload.get("idGrupo");
+
             // Verifica se já existe usuário com mesmo nome
-            if (authService.usuarioExiste(usuario.getNomeUsuario())) {
+            if (authService.usuarioExiste(nomeUsuario)) {
                 return ResponseEntity.badRequest().body("Usuário já existe!");
             }
 
-            // Busca e valida o grupo
-            GrupoUsuario grupo = authService.buscarGrupo(usuario.getGrupo().getIdGrupo());
-            usuario.setGrupo(grupo);
+            // Valida o grupo
+            if (idGrupo == null || idGrupo.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Grupo de usuário é obrigatório!");
+            }
 
+            GrupoUsuario grupo = authService.buscarGrupo(idGrupo);
+            if (grupo == null) {
+                return ResponseEntity.badRequest().body("Grupo inválido!");
+            }
+
+            // Cria o usuário
+            Usuario usuario = new Usuario();
+            usuario.setNomeUsuario(nomeUsuario);
+            usuario.setSenha(senha);
+            usuario.setGrupo(grupo);
             usuario.setAtivo(true);
             usuario.setDataCriacao(LocalDateTime.now());
 

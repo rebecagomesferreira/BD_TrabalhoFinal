@@ -2,8 +2,6 @@ package com.empresa.reciclagem.model.mysql;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "grupo_usuarios")
 public class GrupoUsuario {
@@ -12,17 +10,14 @@ public class GrupoUsuario {
     @Column(name = "id_grupo", length = 10)
     private String idGrupo;
 
-    @Column(name = "nome_grupo", nullable = false, unique = true)
+    @Column(name = "nome_grupo", length = 50, nullable = false) // Mude para 50
     private String nomeGrupo;
 
-    @Column(nullable = false)
+    @Column(name = "descricao", columnDefinition = "TEXT", nullable = false) // Mude para TEXT e NOT NULL
     private String descricao;
 
-    @Column(nullable = false)
+    @Column(name = "prioridade", nullable = false) // ADICIONE ESTE CAMPO
     private Integer prioridade;
-
-    @OneToMany(mappedBy = "grupo")
-    private List<Usuario> usuarios;
 
     // Getters e Setters
     public String getIdGrupo() {
@@ -55,13 +50,5 @@ public class GrupoUsuario {
 
     public void setPrioridade(Integer prioridade) {
         this.prioridade = prioridade;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 }

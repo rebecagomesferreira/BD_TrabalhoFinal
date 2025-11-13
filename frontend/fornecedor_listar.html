@@ -1,21 +1,34 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link rel="stylesheet" href="style.css"><title>Listar fornecedor</title></head>
-<body><div class="container">
-<h1>Lista de Fornecedors</h1>
-<button onclick="load()">Recarregar</button>
-<div id='lista'></div>
-<button onclick="location.href='fornecedor_menu.html'">Voltar</button>
-<script>
-async function load(){
-  let r = await fetch("http://localhost:8080/api/fornecedores");
-  let data = await r.json();
-  lista.innerHTML = data.map(x => `
-    <div class='data-box'>
-      <b>ID:</b> ${x.id}<br>
-      <b>Documento:</b> ${x.documento}<br><b>Nome:</b> ${x.nome}<br><b>Telefone:</b> ${x.telefone}<br><b>Tipo:</b> ${x.tipo}<br>
-    </div>
-  `).join("");
-}
-load();
-</script>
-</div></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Listar fornecedor</title>
+</head>
+<body>
+<div class="container">
+    <h1>Lista de Fornecedores</h1>
+    <button onclick="load()">Recarregar</button>
+    <div id='lista'></div>
+    <button onclick="location.href='fornecedor_menu.html'">Voltar</button>
+
+    <script>
+        async function load(){
+            let r = await fetch("http://localhost:8080/api/fornecedores");
+            let data = await r.json();
+
+            lista.innerHTML = data.map(x => `
+        <div class='data-box'>
+            <b>ID:</b> ${x.idFornecedor}<br>
+            <b>Documento:</b> ${x.cpfCnpj}<br>
+            <b>Nome:</b> ${x.nome}<br>
+            <b>Telefone:</b> ${x.telefone || ''}<br>
+            <b>Tipo:</b> ${x.tipoFornecedor || ''}<br>
+        </div>
+    `).join("");
+        }
+        load();
+    </script>
+</div>
+</body>
+</html>
