@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Relatório Pessoal</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container { width: 95%; max-width: 1200px; margin: 10px auto; }
+        .card { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .client-info { background: #e8f4f8; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid #3498db; }
+        .stat-number { font-size: 2em; font-weight: bold; color: #2c3e50; }
+        .stat-label { font-size: 0.9em; color: #7f8c8d; margin-top: 5px; }
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .history-table th, .history-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .history-table th { background: #f8f9fa; font-weight: bold; color: #555; }
+        .positive { color: #27ae60; font-weight: bold; }
+        .loading, .empty-state { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>📊 Meu Relatório Pessoal</h1>
+        <p style="color: #666;">Acompanhe suas aquisições</p>
+    </div>
+
+    <div class="card">
+        <div class="client-info">
+            <h3>👤 Meus Dados</h3>
+            <div id="client-data">
+                <p><strong>Cliente:</strong> <span id="client-name">Carregando...</span></p>
+                <p><strong>Usuário:</strong> <span id="client-usuario">Carregando...</span></p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-compras">0</div>
+                <div class="stat-label">Total de Aquisições</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="materiais-adquiridos">0</div>
+                <div class="stat-label">Materiais Adquiridos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="valor-total">R$ 0,00</div>
+                <div class="stat-label">Valor Total</div>
+            </div>
+        </div>
+
+        <h3>📈 Histórico de Aquisições</h3>
+
+        <div id="loading" class="loading">⏳ Carregando seu relatório...</div>
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div style="font-size: 3em;">📋</div>
+            <h3>Nenhuma aquisição registrada</h3>
+            <p>Seu histórico aparecerá aqui</p>
+        </div>
+
+        <div id="history-container" style="display: none;">
+            <table class="history-table">
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Material</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                </tr>
+                </thead>
+                <tbody id="history-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <button onclick="voltar()" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">⬅ Voltar</button>
+    </div>
+</div>
+
+<script>
+    const BASE_API = 'http://localhost:8080/api';
+
+    async function carregarRelatorioPessoal() {
+        showLoading();
+
+        // Carregar dados do usuário
+        const usuario = localStorage.getItem('usuario');
+        document.getElementById('client-name').textContent = usuario;
+        document.getElementById('client-usuario').textContent = usuario;
+
+        try {
+            // Buscar transações do cliente
+            const response = await fetch(`${BASE_API}/transacoes?cliente=${usuario}`);
+            if (!response.ok) throw new Error('Erro ao carregar histórico');
+
+            const transacoes = await response.json();
+
+            if (transacoes.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            atualizarEstatisticas(transacoes);
+            exibirHistorico(transacoes);
+        } catch (error) {
+            console.error('Erro:', error);
+            showEmptyState();
+        }
+    }
+
+    function atualizarEstatisticas(transacoes) {
+        const totalCompras = transacoes.length;
+        const materiaisAdquiridos = transacoes.reduce((sum, item) => sum + (item.quantidade || 0), 0);
+        const valorTotal = transacoes.reduce((sum, item) => sum + ((item.quantidade || 0) * (item.valorUnitario || 0)), 0);
+
+        document.getElementById('total-compras').textContent = totalCompras;
+        document.getElementById('materiais-adquiridos').textContent = materiaisAdquiridos;
+        document.getElementById('valor-total').textContent = `R$ ${valorTotal.toFixed(2)}`;
+    }
+
+    function exibirHistorico(transacoes) {
+        const tbody = document.getElementById('history-body');
+
+        tbody.innerHTML = transacoes.map(transacao => {
+            const dataFormatada = transacao.data ? new Date(transacao.data).toLocaleDateString('pt-BR') : 'N/A';
+            const valorTotal = (transacao.quantidade || 0) * (transacao.valorUnitario || 0);
+
+            return `
+                <tr>
+                    <td>${dataFormatada}</td>
+                    <td>${transacao.material || 'Material'}</td>
+                    <td>${transacao.quantidade || 0}</td>
+                    <td>R$ ${(transacao.valorUnitario || 0).toFixed(2)}</td>
+                    <td class="positive">R$ ${valorTotal.toFixed(2)}</td>
+                </tr>
+            `;
+        }).join('');
+
+        hideLoading();
+        showHistory();
+    }
+
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+        hideHistory();
+        hideEmptyState();
+    }
+    function hideLoading() { document.getElementById('loading').style.display = 'none'; }
+    function showHistory() { document.getElementById('history-container').style.display = 'block'; }
+    function hideHistory() { document.getElementById('history-container').style.display = 'none'; }
+    function showEmptyState() {
+        document.getElementById('empty-state').style.display = 'block';
+        hideLoading();
+        hideHistory();
+    }
+    function hideEmptyState() { document.getElementById('empty-state').style.display = 'none'; }
+    function voltar() { location.href = 'menu.html'; }
+
+    document.addEventListener('DOMContentLoaded', carregarRelatorioPessoal);
+</script>
+</body>
+</html>

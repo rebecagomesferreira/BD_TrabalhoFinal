@@ -29,31 +29,42 @@
             const senha = document.getElementById('senha');
             const grupo = document.getElementById('grupo');
 
-            if (!usuario.value.trim() || !senha.value.trim() || !grupo.value) {
+            const usuarioValue = usuario.value.trim();
+            const senhaValue = senha.value;
+            const grupoValue = grupo.value;
+
+            if (!usuarioValue || !senhaValue || !grupoValue) {
                 alert("Preencha todos os campos!");
                 return;
             }
 
             try {
+                // FORMATO CORRETO baseado no AuthController
+                const payload = {
+                    nomeUsuario: usuarioValue,
+                    senha: senhaValue,
+                    idGrupo: grupoValue  // ← AQUI ESTÁ A CORREÇÃO!
+                };
+
+                console.log("Enviando payload:", payload);
+
                 let resposta = await fetch("http://localhost:8080/auth/registrar", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nomeUsuario: usuario.value.trim(),
-                        senha: senha.value,
-                        grupo: { idGrupo: grupo.value }
-                    })
+                    body: JSON.stringify(payload)
                 });
 
                 if (resposta.ok) {
-                    alert("Conta criada com sucesso!");
+                    alert("✅ Conta criada com sucesso!");
                     location.href = "index.html";
                 } else {
-                    let msg = await resposta.text();
-                    alert("Erro ao criar conta: " + msg);
+                    let errorText = await resposta.text();
+                    alert("❌ Erro ao criar conta: " + errorText);
                 }
+
             } catch (e) {
-                alert("Erro de conexão com o servidor: " + e.message);
+                alert("❌ Erro de conexão: " + e.message);
+                console.error("Erro completo:", e);
             }
         }
     </script>

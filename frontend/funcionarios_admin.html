@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Funcionários</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container { width: 98%; max-width: 1000px; margin: 5px auto; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .form-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .form-row input, .form-row select { flex: 1; min-width: 120px; padding: 8px; border: 1px solid #7fbf7f; border-radius: 6px; font-size: 0.85em; }
+        .btn-group { display: flex; gap: 6px; margin-top: 8px; }
+        button { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.9em; }
+        .btn-primary { background: #2f6b2f; color: white; }
+        .btn-secondary { background: #666; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.8em; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .actions { display: flex; gap: 4px; }
+        .actions button { padding: 4px 8px; font-size: 0.75em; }
+        .status-badge { padding: 3px 6px; border-radius: 10px; font-size: 0.7em; font-weight: bold; }
+        .status-active { background: #e8f5e8; color: #2e7d32; }
+        .status-inactive { background: #ffebee; color: #c62828; }
+        h1 { font-size: 1.5em; margin-bottom: 5px; }
+        h3 { font-size: 1.1em; margin-bottom: 10px; }
+        p { font-size: 0.9em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🧰 Gerenciar Funcionários</h1>
+        <p style="color: #666;">Cadastro e gestão de funcionários</p>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar/Editar Funcionário</h3>
+        <div class="form-row">
+            <input id="f_id" placeholder="ID" disabled style="flex: 0.5;">
+            <input id="f_nome" placeholder="Nome completo *">
+            <input id="f_cargo" placeholder="Cargo *">
+        </div>
+        <div class="form-row">
+            <input id="f_cpf" placeholder="CPF *">
+            <input id="f_salario" type="number" step="0.01" placeholder="Salário *">
+            <input id="f_telefone" placeholder="Telefone">
+        </div>
+        <div class="form-row">
+            <input id="f_email" placeholder="Email" style="flex: 2;">
+            <input id="f_data_nascimento" type="date" style="flex: 1;">
+            <select id="f_ativo" style="flex: 1;">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <input id="f_endereco" placeholder="Endereço">
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
+            <button class="btn-secondary" onclick="limpar()">🗑️ Limpar</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Lista de Funcionários</h3>
+        <div id="loading" style="text-align: center; padding: 10px; color: #666;">⏳ Carregando...</div>
+        <div id="lista-funcionarios"></div>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px;">
+        <button onclick="history.back()" class="btn-secondary">⬅ Voltar</button>
+    </div>
+</div>
+
+<script>
+    const BASE_API = 'http://localhost:8080/api';
+
+    async function carregarFuncionarios() {
+        try {
+            const response = await fetch(`${BASE_API}/funcionarios`);
+            const funcionarios = await response.json();
+            exibirFuncionarios(funcionarios);
+        } catch (error) {
+            document.getElementById('lista-funcionarios').innerHTML = '<p>Erro ao carregar funcionários</p>';
+        }
+    }
+
+    async function salvarFuncionario() {
+        const id = document.getElementById('f_id').value;
+        const payload = {
+            nome: document.getElementById('f_nome').value,
+            cargo: document.getElementById('f_cargo').value,
+            cpfCnpj: document.getElementById('f_cpf').value,
+            salario: parseFloat(document.getElementById('f_salario').value),
+            telefone: document.getElementById('f_telefone').value,
+            email: document.getElementById('f_email').value,
+            dataNascimento: document.getElementById('f_data_nascimento').value,
+            endereco: document.getElementById('f_endereco').value,
+            ativo: document.getElementById('f_ativo').value === 'true'
+        };
+
+        try {
+            let response;
+            if (id) {
+                response = await fetch(`${BASE_API}/funcionarios/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                response = await fetch(`${BASE_API}/funcionarios`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            }
+
+            if (response.ok) {
+                alert('Funcionário salvo!');
+                limpar();
+                carregarFuncionarios();
+            }
+        } catch (error) {
+            alert('Erro ao salvar funcionário');
+        }
+    }
+
+    function editarFuncionario(id) {
+        fetch(`${BASE_API}/funcionarios/${id}`)
+            .then(r => r.json())
+            .then(funcionario => {
+                document.getElementById('f_id').value = funcionario.idFuncionario;
+                document.getElementById('f_nome').value = funcionario.nome;
+                document.getElementById('f_cargo').value = funcionario.cargo;
+                document.getElementById('f_cpf').value = funcionario.cpfCnpj;
+                document.getElementById('f_salario').value = funcionario.salario;
+                document.getElementById('f_telefone').value = funcionario.telefone || '';
+                document.getElementById('f_email').value = funcionario.email || '';
+                document.getElementById('f_endereco').value = funcionario.endereco || '';
+                document.getElementById('f_ativo').value = funcionario.ativo;
+
+                if (funcionario.dataNascimento) {
+                    const data = new Date(funcionario.dataNascimento);
+                    document.getElementById('f_data_nascimento').value = data.toISOString().split('T')[0];
+                }
+            });
+    }
+
+    async function excluirFuncionario(id) {
+        if (!confirm('Excluir este funcionário?')) return;
+
+        try {
+            const response = await fetch(`${BASE_API}/funcionarios/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                alert('Funcionário excluído!');
+                carregarFuncionarios();
+            }
+        } catch (error) {
+            alert('Erro ao excluir funcionário');
+        }
+    }
+
+    function exibirFuncionarios(funcionarios) {
+        const lista = document.getElementById('lista-funcionarios');
+        lista.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Cargo</th>
+                        <th>Salário</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${funcionarios.map(f => `
+                        <tr>
+                            <td>${f.idFuncionario}</td>
+                            <td><strong>${f.nome}</strong></td>
+                            <td>${f.cargo}</td>
+                            <td>R$ ${f.salario?.toFixed(2) || '0.00'}</td>
+                            <td>
+                                <span class="status-badge ${f.ativo ? 'status-active' : 'status-inactive'}">
+                                    ${f.ativo ? 'Ativo' : 'Inativo'}
+                                </span>
+                            </td>
+                            <td class="actions">
+                                <button class="btn-primary" onclick="editarFuncionario(${f.idFuncionario})">Editar</button>
+                                <button class="btn-danger" onclick="excluirFuncionario(${f.idFuncionario})">Excluir</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    function limpar() {
+        document.getElementById('f_id').value = '';
+        document.getElementById('f_nome').value = '';
+        document.getElementById('f_cargo').value = '';
+        document.getElementById('f_cpf').value = '';
+        document.getElementById('f_salario').value = '';
+        document.getElementById('f_telefone').value = '';
+        document.getElementById('f_email').value = '';
+        document.getElementById('f_data_nascimento').value = '';
+        document.getElementById('f_endereco').value = '';
+        document.getElementById('f_ativo').value = 'true';
+    }
+
+    carregarFuncionarios();
+</script>
+</body>
+</html>

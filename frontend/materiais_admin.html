@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Materiais</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container { width: 98%; max-width: 1000px; margin: 5px auto; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .form-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .form-row input, .form-row select { flex: 1; min-width: 120px; padding: 8px; border: 1px solid #7fbf7f; border-radius: 6px; font-size: 0.85em; }
+        .btn-group { display: flex; gap: 6px; margin-top: 8px; }
+        button { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.9em; }
+        .btn-primary { background: #2f6b2f; color: white; }
+        .btn-secondary { background: #666; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.8em; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .actions { display: flex; gap: 4px; }
+        .actions button { padding: 4px 8px; font-size: 0.75em; }
+        h1 { font-size: 1.5em; margin-bottom: 5px; }
+        h3 { font-size: 1.1em; margin-bottom: 10px; }
+        p { font-size: 0.9em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🧾 Gerenciar Materiais</h1>
+        <p style="color: #666;">Cadastro e gestão de materiais recicláveis</p>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar/Editar Material</h3>
+        <div class="form-row">
+            <input id="f_id" placeholder="ID" disabled style="flex: 0.5;">
+            <input id="f_descricao" placeholder="Descrição *">
+            <select id="f_tipo" style="flex: 1;">
+                <option value="">Tipo *</option>
+                <option value="Papel">Papel</option>
+                <option value="Plástico">Plástico</option>
+                <option value="Vidro">Vidro</option>
+                <option value="Metal">Metal</option>
+                <option value="Orgânico">Orgânico</option>
+            </select>
+            <input id="f_preco" type="number" step="0.01" placeholder="Preço/kg *" style="flex: 1;">
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="salvarMaterial()">💾 Salvar Material</button>
+            <button class="btn-secondary" onclick="limpar()">🗑️ Limpar</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Lista de Materiais</h3>
+        <div id="loading" style="text-align: center; padding: 10px; color: #666;">⏳ Carregando...</div>
+        <div id="lista-materiais"></div>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px;">
+        <button onclick="history.back()" class="btn-secondary">⬅ Voltar</button>
+    </div>
+</div>
+
+<script>
+    const BASE_API = 'http://localhost:8080/api';
+
+    async function carregarMateriais() {
+        try {
+            const response = await fetch(`${BASE_API}/materiais`);
+            const materiais = await response.json();
+            exibirMateriais(materiais);
+        } catch (error) {
+            document.getElementById('lista-materiais').innerHTML = '<p>Erro ao carregar materiais</p>';
+        }
+    }
+
+    async function salvarMaterial() {
+        const id = document.getElementById('f_id').value;
+        const descricao = document.getElementById('f_descricao').value;
+        const tipo = document.getElementById('f_tipo').value;
+        const preco = document.getElementById('f_preco').value;
+
+        if (!descricao || !tipo || !preco) {
+            alert('Preencha todos os campos obrigatórios!');
+            return;
+        }
+
+        const payload = {
+            descricao: descricao,
+            tipo: tipo,
+            precoKg: parseFloat(preco)
+        };
+
+        try {
+            let response;
+            if (id) {
+                response = await fetch(`${BASE_API}/materiais/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                response = await fetch(`${BASE_API}/materiais`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            }
+
+            if (response.ok) {
+                alert('Material salvo com sucesso!');
+                limpar();
+                carregarMateriais();
+            } else {
+                alert('Erro ao salvar material');
+            }
+        } catch (error) {
+            alert('Erro de conexão: ' + error.message);
+        }
+    }
+
+    function editarMaterial(id) {
+        fetch(`${BASE_API}/materiais/${id}`)
+            .then(r => r.json())
+            .then(material => {
+                document.getElementById('f_id').value = material.idMaterial;
+                document.getElementById('f_descricao').value = material.descricao;
+                document.getElementById('f_tipo').value = material.tipo;
+                document.getElementById('f_preco').value = material.precoKg;
+            })
+            .catch(error => {
+                alert('Erro ao carregar material: ' + error.message);
+            });
+    }
+
+    async function excluirMaterial(id) {
+        if (!confirm('Tem certeza que deseja excluir este material?')) return;
+
+        try {
+            const response = await fetch(`${BASE_API}/materiais/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+                alert('Material excluído com sucesso!');
+                carregarMateriais();
+            } else {
+                alert('Erro ao excluir material');
+            }
+        } catch (error) {
+            alert('Erro de conexão: ' + error.message);
+        }
+    }
+
+    function exibirMateriais(materiais) {
+        const lista = document.getElementById('lista-materiais');
+        lista.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Tipo</th>
+                        <th>Preço/kg</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${materiais.map(m => `
+                        <tr>
+                            <td>${m.idMaterial}</td>
+                            <td><strong>${m.descricao}</strong></td>
+                            <td>${m.tipo}</td>
+                            <td>R$ ${m.precoKg.toFixed(2)}</td>
+                            <td class="actions">
+                                <button class="btn-primary" onclick="editarMaterial(${m.idMaterial})">Editar</button>
+                                <button class="btn-danger" onclick="excluirMaterial(${m.idMaterial})">Excluir</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    function limpar() {
+        document.getElementById('f_id').value = '';
+        document.getElementById('f_descricao').value = '';
+        document.getElementById('f_tipo').value = '';
+        document.getElementById('f_preco').value = '';
+    }
+
+    carregarMateriais();
+</script>
+</body>
+</html>

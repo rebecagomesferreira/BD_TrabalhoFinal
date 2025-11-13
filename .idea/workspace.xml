@@ -4,9 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3fe1e17-4ace-4556-82d5-dab3cb749fda" name="Changes" comment="feat(frontend): adiciona implementação do frontend para menu de administrador + correções de CRUD">
+    <list default="true" id="c3fe1e17-4ace-4556-82d5-dab3cb749fda" name="Changes" comment="feat(frontend): adiciona implementação do frontend para menu de gerente + correções de CRUD">
+      <change afterPath="$PROJECT_DIR$/frontend/entrada.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/fornecedores_admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/funcionarios_admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/materiais_admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/relatorio_pessoal.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/saida.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/config.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/config.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/funcionarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/funcionarios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/materiais.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/materiais.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/registrar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/registrar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +27,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -48,6 +59,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -113,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762995684251</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat(frontend): adiciona implementação do frontend para menu de gerente + correções de CRUD">
+      <option name="closed" value="true" />
+      <created>1762996819239</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1762996819239</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,6 +141,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat(frontend): adiciona implementação do frontend para menu de administrador + correções de CRUD" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(frontend): adiciona implementação do frontend para menu de administrador + correções de CRUD" />
+    <MESSAGE value="feat(frontend): adiciona implementação do frontend para menu de gerente + correções de CRUD" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(frontend): adiciona implementação do frontend para menu de gerente + correções de CRUD" />
   </component>
 </project>

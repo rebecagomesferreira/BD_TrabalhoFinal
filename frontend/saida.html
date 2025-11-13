@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Saída/Reciclagem</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            width: 95%;
+            max-width: 800px;
+            margin: 10px auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .form-row input, .form-row select, .form-row textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1.5px solid #dc3545;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        .required {
+            border-color: #b83232 !important;
+        }
+        .tipo-group {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        .tipo-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .tipo-option.selected {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🚚 Registrar Saída / Reciclagem</h1>
+    </div>
+
+    <div class="card">
+        <h3>Nova Saída</h3>
+
+        <div class="tipo-group">
+            <div class="tipo-option selected" onclick="selecionarTipo('venda')">
+                <strong>💰 Venda</strong><br>
+                <small>Material vendido</small>
+            </div>
+            <div class="tipo-option" onclick="selecionarTipo('reciclagem')">
+                <strong>♻️ Reciclagem</strong><br>
+                <small>Material reciclado</small>
+            </div>
+            <div class="tipo-option" onclick="selecionarTipo('descarte')">
+                <strong>🗑️ Descarte</strong><br>
+                <small>Material descartado</small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <input id="material" placeholder="Nome do Material *" class="required">
+            <input id="quantidade" type="number" placeholder="Quantidade *" class="required">
+        </div>
+        <div class="form-row">
+            <input id="destino" placeholder="Destino/Cliente *" class="required">
+            <input id="valor" type="number" step="0.01" placeholder="Valor R$ (se aplicável)">
+        </div>
+        <div class="form-row">
+            <input id="lote" placeholder="Número do Lote">
+            <input id="data_saida" type="date">
+        </div>
+        <div class="form-row">
+            <textarea id="observacoes" placeholder="Observações" rows="3"></textarea>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="registrarSaida()">🚚 Registrar Saída</button>
+            <button class="btn-secondary" onclick="limpar()">🗑️ Limpar</button>
+        </div>
+        <div style="font-size: 0.8em; color: #b83232; margin-top: 8px;">
+            * Campos obrigatórios
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Últimas Saídas</h3>
+        <div id="lista-saidas">
+            <p style="text-align: center; color: #666;">Nenhuma saída registrada ainda</p>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <button onclick="voltar()" class="btn-secondary">⬅ Voltar ao Menu</button>
+    </div>
+</div>
+
+<script>
+    const BASE = 'http://localhost:8080/api';
+    let saidas = [];
+    let tipoSelecionado = 'venda';
+
+    function selecionarTipo(tipo) {
+        tipoSelecionado = tipo;
+        document.querySelectorAll('.tipo-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        event.target.closest('.tipo-option').classList.add('selected');
+    }
+
+    function registrarSaida() {
+        const material = document.getElementById('material').value.trim();
+        const quantidade = document.getElementById('quantidade').value;
+        const destino = document.getElementById('destino').value.trim();
+
+        if (!material || !quantidade || !destino) {
+            alert('Preencha todos os campos obrigatórios!');
+            return;
+        }
+
+        const novaSaida = {
+            id: Date.now(),
+            tipo: tipoSelecionado,
+            material: material,
+            quantidade: parseInt(quantidade),
+            destino: destino,
+            valor: document.getElementById('valor').value,
+            lote: document.getElementById('lote').value,
+            data: document.getElementById('data_saida').value || new Date().toISOString().split('T')[0],
+            observacoes: document.getElementById('observacoes').value,
+            timestamp: new Date().toLocaleString('pt-BR')
+        };
+
+        saidas.unshift(novaSaida);
+        atualizarListaSaidas();
+        alert('✅ Saída registrada com sucesso!');
+        limpar();
+    }
+
+    function atualizarListaSaidas() {
+        const lista = document.getElementById('lista-saidas');
+
+        if (saidas.length === 0) {
+            lista.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma saída registrada ainda</p>';
+            return;
+        }
+
+        lista.innerHTML = saidas.slice(0, 5).map(saida => {
+            const icones = {
+                'venda': '💰',
+                'reciclagem': '♻️',
+                'descarte': '🗑️'
+            };
+
+            return `
+                <div style="border: 1px solid #eee; padding: 10px; margin: 5px 0; border-radius: 8px;">
+                    ${icones[saida.tipo]} <strong>${saida.material}</strong> - ${saida.quantidade} unidades<br>
+                    <small>${saida.destino} | ${saida.timestamp}</small>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function limpar() {
+        document.getElementById('material').value = '';
+        document.getElementById('quantidade').value = '';
+        document.getElementById('destino').value = '';
+        document.getElementById('valor').value = '';
+        document.getElementById('lote').value = '';
+        document.getElementById('data_saida').value = '';
+        document.getElementById('observacoes').value = '';
+    }
+
+    function voltar() {
+        location.href = 'menu.html';
+    }
+
+    // Data atual como padrão
+    document.getElementById('data_saida').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

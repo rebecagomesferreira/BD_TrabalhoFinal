@@ -54,16 +54,16 @@
     <!-- ADMINISTRADOR -->
     <div id="menuAdm" class="menu-section hidden">
         <button onclick="abrirPagina('usuarios.html')">👑 Gerenciar Usuários</button>
-        <button onclick="abrirPagina('funcionarios.html')">🧰 Gerenciar Funcionários</button>
-        <button onclick="abrirPagina('fornecedores.html')">🏢 Gerenciar Fornecedores</button>
-        <button onclick="abrirPagina('materiais.html')">🧾 Gerenciar Materiais</button>
+        <button onclick="abrirPagina('funcionarios_admin.html')">🧰 Gerenciar Funcionários</button>
+        <button onclick="abrirPagina('fornecedores_admin.html')">🏢 Gerenciar Fornecedores</button>
+        <button onclick="abrirPagina('materiais_admin.html')">🧾 Gerenciar Materiais</button>
         <button onclick="abrirPagina('relatorios.html')">📊 Relatórios Gerais</button>
         <button onclick="abrirPagina('config.html')">⚙ Configurações do Sistema</button>
     </div>
 
     <!-- GERENTE -->
     <div id="menuGer" class="menu-section hidden">
-        <button onclick="abrirPagina('materiais.html')">🧾 Gerenciar Materiais</button>
+        <button onclick="abrirPagina('materiais_admin.html')">🧾 Gerenciar Materiais</button>
         <button onclick="abrirPagina('fornecedores.html')">📦 Ver Fornecedores</button>
         <button onclick="abrirPagina('relatorios.html')">📊 Relatórios Gerais</button>
         <button onclick="abrirPagina('funcionarios.html')">👥 Acompanhar Funcionários</button>
@@ -71,17 +71,17 @@
 
     <!-- FUNCIONÁRIO -->
     <div id="menuOpe" class="menu-section hidden">
-        <button onclick="abrirPagina('entrada.html')">📦 Registrar Entrada de Materiais</button>
-        <button onclick="abrirPagina('saida.html')">🚚 Registrar Saída / Reciclagem</button>
+        <button onclick="abrirPagina('entrada.html')">📦 Registrar Entrada</button>
+        <button onclick="abrirPagina('saida.html')">🚚 Registrar Saída</button>
         <button onclick="abrirPagina('fornecedores.html')">📋 Consultar Fornecedores</button>
-        <button onclick="abrirPagina('relatorios.html')">📈 Ver Relatórios Simples</button>
+        <button onclick="abrirPagina('materiais.html')">📄 Ver Materiais</button>
     </div>
 
     <!-- CLIENTE -->
     <div id="menuVis" class="menu-section hidden">
-        <button onclick="abrirPagina('materiais.html')">📄 Ver Materiais Reciclados</button>
+        <button onclick="abrirPagina('materiais.html')">📄 Ver Materiais</button>
         <button onclick="abrirPagina('fornecedores.html')">🧾 Ver Fornecedores</button>
-        <button onclick="abrirPagina('relatorios.html')">📊 Ver Relatório Pessoal</button>
+        <button onclick="abrirPagina('relatorio_pessoal.html')">📊 Meu Relatório</button>
     </div>
 
     <button class="logout" onclick="logout()">Sair</button>

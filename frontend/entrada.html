@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Entrada de Materiais</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            width: 95%;
+            max-width: 800px;
+            margin: 10px auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .form-row input, .form-row select, .form-row textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1.5px solid #7fbf7f;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: #2f6b2f;
+            color: white;
+        }
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        .required {
+            border-color: #b83232 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>📦 Registrar Entrada de Materiais</h1>
+    </div>
+
+    <div class="card">
+        <h3>Nova Entrada</h3>
+        <div class="form-row">
+            <input id="material" placeholder="Nome do Material *" class="required">
+            <input id="quantidade" type="number" placeholder="Quantidade *" class="required">
+        </div>
+        <div class="form-row">
+            <select id="fornecedor" class="required">
+                <option value="">Selecione o Fornecedor *</option>
+            </select>
+            <input id="valor" type="number" step="0.01" placeholder="Valor Unitário R$">
+        </div>
+        <div class="form-row">
+            <input id="lote" placeholder="Número do Lote">
+            <input id="data_entrada" type="date">
+        </div>
+        <div class="form-row">
+            <textarea id="observacoes" placeholder="Observações" rows="3"></textarea>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="registrarEntrada()">💾 Registrar Entrada</button>
+            <button class="btn-secondary" onclick="limpar()">🗑️ Limpar</button>
+        </div>
+        <div style="font-size: 0.8em; color: #b83232; margin-top: 8px;">
+            * Campos obrigatórios
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Últimas Entradas</h3>
+        <div id="lista-entradas">
+            <p style="text-align: center; color: #666;">Nenhuma entrada registrada ainda</p>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <button onclick="voltar()" class="btn-secondary">⬅ Voltar ao Menu</button>
+    </div>
+</div>
+
+<script>
+    const BASE = 'http://localhost:8080/api';
+    let entradas = [];
+
+    async function carregarFornecedores() {
+        try {
+            const res = await fetch(`${BASE}/fornecedores`);
+            const fornecedores = await res.json();
+            const select = document.getElementById('fornecedor');
+
+            fornecedores.forEach(fornecedor => {
+                const option = document.createElement('option');
+                option.value = fornecedor.idFornecedor;
+                option.textContent = fornecedor.nome;
+                select.appendChild(option);
+            });
+        } catch(e) {
+            console.error('Erro ao carregar fornecedores:', e);
+        }
+    }
+
+    function registrarEntrada() {
+        const material = document.getElementById('material').value.trim();
+        const quantidade = document.getElementById('quantidade').value;
+        const fornecedor = document.getElementById('fornecedor').value;
+
+        if (!material || !quantidade || !fornecedor) {
+            alert('Preencha todos os campos obrigatórios!');
+            return;
+        }
+
+        const novaEntrada = {
+            id: Date.now(),
+            material: material,
+            quantidade: parseInt(quantidade),
+            fornecedor: fornecedor,
+            valor: document.getElementById('valor').value,
+            lote: document.getElementById('lote').value,
+            data: document.getElementById('data_entrada').value || new Date().toISOString().split('T')[0],
+            observacoes: document.getElementById('observacoes').value,
+            timestamp: new Date().toLocaleString('pt-BR')
+        };
+
+        entradas.unshift(novaEntrada);
+        atualizarListaEntradas();
+        alert('✅ Entrada registrada com sucesso!');
+        limpar();
+    }
+
+    function atualizarListaEntradas() {
+        const lista = document.getElementById('lista-entradas');
+
+        if (entradas.length === 0) {
+            lista.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma entrada registrada ainda</p>';
+            return;
+        }
+
+        lista.innerHTML = entradas.slice(0, 5).map(entrada => `
+            <div style="border: 1px solid #eee; padding: 10px; margin: 5px 0; border-radius: 8px;">
+                <strong>${entrada.material}</strong> - ${entrada.quantidade} unidades<br>
+                <small>Fornecedor: ${entrada.fornecedor} | ${entrada.timestamp}</small>
+            </div>
+        `).join('');
+    }
+
+    function limpar() {
+        document.getElementById('material').value = '';
+        document.getElementById('quantidade').value = '';
+        document.getElementById('fornecedor').value = '';
+        document.getElementById('valor').value = '';
+        document.getElementById('lote').value = '';
+        document.getElementById('data_entrada').value = '';
+        document.getElementById('observacoes').value = '';
+    }
+
+    function voltar() {
+        location.href = 'menu.html';
+    }
+
+    // Data atual como padrão
+    document.getElementById('data_entrada').value = new Date().toISOString().split('T')[0];
+    carregarFornecedores();
+</script>
+</body>
+</html>

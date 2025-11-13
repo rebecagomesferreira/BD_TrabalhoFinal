@@ -5,94 +5,78 @@
     <title>Configurações do Sistema</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .container{max-width:700px}
-        .info-box {
-            background: #e8f4fd;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #2196F3;
-            margin-bottom: 20px;
-        }
+        .container { width: 95%; max-width: 800px; margin: 10px auto; }
+        .card { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .config-item { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .config-item h3 { margin-bottom: 10px; color: #2c3e50; }
+        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: #2f6b2f; color: white; }
+        .btn-secondary { background: #666; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>⚙ Configurações do Sistema</h1>
-
-    <div class="info-box">
-        <strong>💡 Configurações Locais</strong><br>
-        Ajuste as preferências do sistema. As configurações são salvas no seu navegador.
+    <div class="card">
+        <h1>⚙ Configurações do Sistema</h1>
+        <p style="color: #666;">Configurações e manutenção do sistema</p>
     </div>
 
-    <label><strong>Nome da Empresa</strong></label>
-    <input id="empresa" placeholder="Digite o nome da empresa" style="width: 100%; padding: 10px; margin: 5px 0 15px 0;">
+    <div class="card">
+        <div class="config-item">
+            <h3>📊 Backup de Dados</h3>
+            <p>Faça backup completo do sistema</p>
+            <button class="btn-primary" onclick="fazerBackup()">💾 Fazer Backup</button>
+        </div>
 
-    <label><strong>Modo de Operação</strong></label>
-    <select id="manut" style="width: 100%; padding: 10px; margin: 5px 0 15px 0;">
-        <option value="false">🟢 Normal</option>
-        <option value="true">🟡 Modo Manutenção</option>
-    </select>
+        <div class="config-item">
+            <h3>🔄 Limpeza de Cache</h3>
+            <p>Limpe cache e dados temporários</p>
+            <button class="btn-secondary" onclick="limparCache()">🧹 Limpar Cache</button>
+        </div>
 
-    <div style="margin-top:20px; display: flex; gap: 10px;">
-        <button onclick="salvarLocal()" style="background: #2f6b2f; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
-            💾 Salvar Configurações
-        </button>
-        <button onclick="baixar()" style="background: #2196F3; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
-            📤 Exportar Configurações
-        </button>
+        <div class="config-item">
+            <h3>📋 Logs do Sistema</h3>
+            <p>Visualize logs e atividades</p>
+            <button class="btn-secondary" onclick="abrirLogs()">📋 Ver Logs</button>
+        </div>
+
+        <div class="config-item">
+            <h3>⚠️ Manutenção</h3>
+            <p>Configurações avançadas do sistema</p>
+            <button class="btn-danger" onclick="modoManutencao()">🛠️ Modo Manutenção</button>
+        </div>
     </div>
 
-    <div id="msg" style="margin-top:15px; padding: 10px; border-radius: 6px;"></div>
-
-    <button onclick="voltar()" style="margin-top: 30px; padding: 10px 20px;">⬅ Voltar ao Menu</button>
+    <div style="text-align: center;">
+        <button onclick="history.back()" class="btn-secondary">⬅ Voltar</button>
+    </div>
 </div>
 
 <script>
-    function carregar() {
-        const cfg = localStorage.getItem('app_config');
-        if (cfg) {
-            const config = JSON.parse(cfg);
-            document.getElementById('empresa').value = config.empresa || '';
-            document.getElementById('manut').value = config.manut || 'false';
-            mostrarMensagem('✅ Configurações carregadas!', 'success');
+    function fazerBackup() {
+        alert('Backup iniciado! Esta operação pode demorar alguns minutos.');
+        // Implementar lógica de backup
+    }
+
+    function limparCache() {
+        if (confirm('Deseja limpar o cache do sistema?')) {
+            localStorage.removeItem('cache_dados');
+            alert('Cache limpo com sucesso!');
         }
     }
 
-    function salvarLocal(){
-        const cfg = {
-            empresa: document.getElementById('empresa').value,
-            manut: document.getElementById('manut').value
-        };
-        localStorage.setItem('app_config', JSON.stringify(cfg));
-        mostrarMensagem('✅ Configurações salvas com sucesso!', 'success');
+    function abrirLogs() {
+        alert('Abrindo logs do sistema...');
+        window.open('logs.html', '_blank');
     }
 
-    function baixar(){
-        const cfg = localStorage.getItem('app_config') || '{}';
-        const blob = new Blob([cfg], {type:'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'configurações-sistema.json';
-        a.click();
-        URL.revokeObjectURL(url);
-        mostrarMensagem('📤 Configurações exportadas!', 'info');
+    function modoManutencao() {
+        if (confirm('ATENÇÃO: Isso colocará o sistema em modo de manutenção. Continuar?')) {
+            alert('Sistema entrando em modo de manutenção...');
+            // Implementar lógica de manutenção
+        }
     }
-
-    function mostrarMensagem(texto, tipo) {
-        const msg = document.getElementById('msg');
-        msg.textContent = texto;
-        msg.style.background = tipo === 'success' ? '#e8f5e8' : '#e8f4fd';
-        msg.style.color = tipo === 'success' ? '#2f6b2f' : '#2196F3';
-        msg.style.border = tipo === 'success' ? '1px solid #2f6b2f' : '1px solid #2196F3';
-    }
-
-    function voltar(){
-        location.href = 'menu.html';
-    }
-
-    // Carrega automaticamente
-    carregar();
 </script>
 </body>
 </html>
