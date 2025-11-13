@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fornecedores - Visualização</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 10px auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .filter-group label {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .filter-group input, .filter-group select {
+            padding: 8px 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+            min-width: 150px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.85em;
+        }
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #555;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+        .status-active {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        .status-inactive {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .btn-view {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75em;
+        }
+        .btn-view:hover {
+            background: #2980b9;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #3498db;
+            border-radius: 25px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🏢 Fornecedores - Visualização</h1>
+        <p style="color: #666; margin-top: 5px;">Acompanhe os fornecedores cadastrados no sistema</p>
+    </div>
+
+    <div class="card">
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-fornecedores">-</div>
+                <div class="stat-label">Total de Fornecedores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="fornecedores-ativos">-</div>
+                <div class="stat-label">Fornecedores Ativos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pessoas-fisicas">-</div>
+                <div class="stat-label">Pessoas Físicas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="empresas">-</div>
+                <div class="stat-label">Empresas</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="search-box">
+                <label>🔍 Pesquisar Fornecedor</label>
+                <input type="text" id="search" placeholder="Digite o nome, CPF/CNPJ ou telefone..." onkeyup="filtrarFornecedores()">
+            </div>
+            <div class="filter-group">
+                <label>Tipo</label>
+                <select id="filterTipo" onchange="filtrarFornecedores()">
+                    <option value="">Todos os tipos</option>
+                    <option value="FISICA">Pessoa Física</option>
+                    <option value="JURIDICA">Pessoa Jurídica</option>
+                    <option value="EMPRESA">Empresa</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select id="filterStatus" onchange="filtrarFornecedores()">
+                    <option value="">Todos</option>
+                    <option value="ativo">Ativos</option>
+                    <option value="inativo">Inativos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Ordenar por</label>
+                <select id="sortBy" onchange="ordenarFornecedores()">
+                    <option value="nome">Nome A-Z</option>
+                    <option value="nome_desc">Nome Z-A</option>
+                    <option value="data">Mais Recentes</option>
+                    <option value="data_desc">Mais Antigos</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div>⏳</div>
+            <p>Carregando lista de fornecedores...</p>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div style="font-size: 3em;">📭</div>
+            <h3>Nenhum fornecedor encontrado</h3>
+            <p>Tente ajustar os filtros de pesquisa</p>
+        </div>
+
+        <div id="table-container" style="display: none;">
+            <table id="tbl">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome/Razão Social</th>
+                    <th>CPF/CNPJ</th>
+                    <th>Telefone</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="tbl-body"></tbody>
+            </table>
+
+            <div style="margin-top: 15px; text-align: center; color: #666; font-size: 0.9em;">
+                Mostrando <span id="showing-count">0</span> de <span id="total-count">0</span> fornecedores
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="voltar()" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            ⬅ Voltar ao Menu
+        </button>
+    </div>
+</div>
+
+<script>
+    const BASE = 'http://localhost:8080';
+    let todosFornecedores = [];
+    let fornecedoresFiltrados = [];
+
+    // Funções de tradução
+    function traduzirTipo(tipo) {
+        const tipos = {
+            'FISICA': 'Pessoa Física',
+            'JURIDICA': 'Pessoa Jurídica',
+            'EMPRESA': 'Empresa'
+        };
+        return tipos[tipo] || tipo;
+    }
+
+    function getStatus(fornecedor) {
+        // Simulação - você pode adaptar conforme sua lógica de negócio
+        return Math.random() > 0.2 ? 'ativo' : 'inativo';
+    }
+
+    function traduzirStatus(status) {
+        return status === 'ativo' ? 'Ativo' : 'Inativo';
+    }
+
+    async function loadFornecedores() {
+        showLoading();
+
+        try {
+            const res = await fetch(`${BASE}/api/fornecedores`);
+
+            if (!res.ok) {
+                // Tentar endpoint alternativo
+                const resAlt = await fetch(`${BASE}/fornecedores`);
+                if (resAlt.ok) {
+                    const data = await resAlt.json();
+                    processarDados(data);
+                    return;
+                }
+                throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+            }
+
+            const data = await res.json();
+            processarDados(data);
+
+        } catch(e) {
+            showError(`Erro ao carregar fornecedores: ${e.message}`);
+            console.error('Erro detalhado:', e);
+        }
+    }
+
+    function processarDados(data) {
+        hideLoading();
+
+        if (!Array.isArray(data)) {
+            showError('Formato de dados inválido retornado pela API');
+            return;
+        }
+
+        todosFornecedores = data.map(fornecedor => ({
+            ...fornecedor,
+            status: getStatus(fornecedor)
+        }));
+
+        atualizarEstatisticas();
+        filtrarFornecedores();
+    }
+
+    function atualizarEstatisticas() {
+        const total = todosFornecedores.length;
+        const ativos = todosFornecedores.filter(f => f.status === 'ativo').length;
+        const pessoasFisicas = todosFornecedores.filter(f => f.tipoFornecedor === 'FISICA').length;
+        const empresas = todosFornecedores.filter(f => f.tipoFornecedor === 'EMPRESA' || f.tipoFornecedor === 'JURIDICA').length;
+
+        document.getElementById('total-fornecedores').textContent = total;
+        document.getElementById('fornecedores-ativos').textContent = ativos;
+        document.getElementById('pessoas-fisicas').textContent = pessoasFisicas;
+        document.getElementById('empresas').textContent = empresas;
+    }
+
+    function filtrarFornecedores() {
+        const searchTerm = document.getElementById('search').value.toLowerCase();
+        const tipoFilter = document.getElementById('filterTipo').value;
+        const statusFilter = document.getElementById('filterStatus').value;
+
+        console.log('Filtrando por tipo:', tipoFilter);
+        console.log('Todos fornecedores:', todosFornecedores);
+
+        fornecedoresFiltrados = todosFornecedores.filter(fornecedor => {
+            // Filtro de pesquisa
+            const matchSearch = !searchTerm ||
+                (fornecedor.nome && fornecedor.nome.toLowerCase().includes(searchTerm)) ||
+                (fornecedor.cpfCnpj && fornecedor.cpfCnpj.includes(searchTerm)) ||
+                (fornecedor.telefone && fornecedor.telefone.includes(searchTerm));
+
+            // Filtro de tipo
+            const matchTipo = !tipoFilter || fornecedor.tipoFornecedor === tipoFilter;
+
+            // Filtro de status
+            const matchStatus = !statusFilter || fornecedor.status === statusFilter;
+
+            return matchSearch && matchTipo && matchStatus;
+        });
+
+        console.log('Fornecedores filtrados:', fornecedoresFiltrados);
+        ordenarFornecedores();
+    }
+
+    function ordenarFornecedores() {
+        const sortBy = document.getElementById('sortBy').value;
+
+        fornecedoresFiltrados.sort((a, b) => {
+            switch(sortBy) {
+                case 'nome':
+                    return (a.nome || '').localeCompare(b.nome || '');
+                case 'nome_desc':
+                    return (b.nome || '').localeCompare(a.nome || '');
+                case 'data_desc':
+                    return (a.idFornecedor || 0) - (b.idFornecedor || 0);
+                case 'data':
+                default:
+                    return (b.idFornecedor || 0) - (a.idFornecedor || 0);
+            }
+        });
+
+        exibirFornecedores();
+    }
+
+    function exibirFornecedores() {
+        const tbody = document.getElementById('tbl-body');
+        tbody.innerHTML = '';
+
+        if (fornecedoresFiltrados.length === 0) {
+            hideTable();
+            showEmptyState();
+            return;
+        }
+
+        hideEmptyState();
+
+        fornecedoresFiltrados.forEach(fornecedor => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${fornecedor.idFornecedor || fornecedor.id}</td>
+                <td><strong>${fornecedor.nome || fornecedor.razaoSocial}</strong></td>
+                <td>${fornecedor.cpfCnpj || ''}</td>
+                <td>${fornecedor.telefone || '-'}</td>
+                <td>${traduzirTipo(fornecedor.tipoFornecedor)}</td>
+                <td>
+                    <span class="status-badge ${fornecedor.status === 'ativo' ? 'status-active' : 'status-inactive'}">
+                        ${traduzirStatus(fornecedor.status)}
+                    </span>
+                </td>
+                <td class="actions">
+                    <button class="btn-view" onclick="verDetalhes(${fornecedor.idFornecedor || fornecedor.id})">
+                        👁️ Ver
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('showing-count').textContent = fornecedoresFiltrados.length;
+        document.getElementById('total-count').textContent = todosFornecedores.length;
+        showTable();
+    }
+
+    function verDetalhes(id) {
+        const fornecedor = todosFornecedores.find(f => (f.idFornecedor || f.id) === id);
+        if (fornecedor) {
+            const detalhes = `
+Nome/Razão Social: ${fornecedor.nome || fornecedor.razaoSocial}
+CPF/CNPJ: ${fornecedor.cpfCnpj || 'Não informado'}
+Telefone: ${fornecedor.telefone || 'Não informado'}
+Tipo: ${traduzirTipo(fornecedor.tipoFornecedor)}
+Status: ${traduzirStatus(fornecedor.status)}
+            `.trim();
+
+            alert('📋 Detalhes do Fornecedor:\n\n' + detalhes);
+        }
+    }
+
+    // Funções auxiliares de UI
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+        hideError();
+        hideTable();
+        hideEmptyState();
+    }
+
+    function hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    function showError(message) {
+        document.getElementById('error-message').textContent = message;
+        document.getElementById('error-message').style.display = 'block';
+        hideLoading();
+        hideTable();
+        hideEmptyState();
+    }
+
+    function hideError() {
+        document.getElementById('error-message').style.display = 'none';
+    }
+
+    function showTable() {
+        document.getElementById('table-container').style.display = 'block';
+    }
+
+    function hideTable() {
+        document.getElementById('table-container').style.display = 'none';
+    }
+
+    function showEmptyState() {
+        document.getElementById('empty-state').style.display = 'block';
+    }
+
+    function hideEmptyState() {
+        document.getElementById('empty-state').style.display = 'none';
+    }
+
+    function voltar() {
+        location.href = 'menu.html';
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+        loadFornecedores();
+    });
+</script>
+</body>
+</html>

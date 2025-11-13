@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurações do Sistema</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container{max-width:700px}
+        .info-box {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>⚙ Configurações do Sistema</h1>
+
+    <div class="info-box">
+        <strong>💡 Configurações Locais</strong><br>
+        Ajuste as preferências do sistema. As configurações são salvas no seu navegador.
+    </div>
+
+    <label><strong>Nome da Empresa</strong></label>
+    <input id="empresa" placeholder="Digite o nome da empresa" style="width: 100%; padding: 10px; margin: 5px 0 15px 0;">
+
+    <label><strong>Modo de Operação</strong></label>
+    <select id="manut" style="width: 100%; padding: 10px; margin: 5px 0 15px 0;">
+        <option value="false">🟢 Normal</option>
+        <option value="true">🟡 Modo Manutenção</option>
+    </select>
+
+    <div style="margin-top:20px; display: flex; gap: 10px;">
+        <button onclick="salvarLocal()" style="background: #2f6b2f; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+            💾 Salvar Configurações
+        </button>
+        <button onclick="baixar()" style="background: #2196F3; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+            📤 Exportar Configurações
+        </button>
+    </div>
+
+    <div id="msg" style="margin-top:15px; padding: 10px; border-radius: 6px;"></div>
+
+    <button onclick="voltar()" style="margin-top: 30px; padding: 10px 20px;">⬅ Voltar ao Menu</button>
+</div>
+
+<script>
+    function carregar() {
+        const cfg = localStorage.getItem('app_config');
+        if (cfg) {
+            const config = JSON.parse(cfg);
+            document.getElementById('empresa').value = config.empresa || '';
+            document.getElementById('manut').value = config.manut || 'false';
+            mostrarMensagem('✅ Configurações carregadas!', 'success');
+        }
+    }
+
+    function salvarLocal(){
+        const cfg = {
+            empresa: document.getElementById('empresa').value,
+            manut: document.getElementById('manut').value
+        };
+        localStorage.setItem('app_config', JSON.stringify(cfg));
+        mostrarMensagem('✅ Configurações salvas com sucesso!', 'success');
+    }
+
+    function baixar(){
+        const cfg = localStorage.getItem('app_config') || '{}';
+        const blob = new Blob([cfg], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'configurações-sistema.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        mostrarMensagem('📤 Configurações exportadas!', 'info');
+    }
+
+    function mostrarMensagem(texto, tipo) {
+        const msg = document.getElementById('msg');
+        msg.textContent = texto;
+        msg.style.background = tipo === 'success' ? '#e8f5e8' : '#e8f4fd';
+        msg.style.color = tipo === 'success' ? '#2f6b2f' : '#2196F3';
+        msg.style.border = tipo === 'success' ? '1px solid #2f6b2f' : '1px solid #2196F3';
+    }
+
+    function voltar(){
+        location.href = 'menu.html';
+    }
+
+    // Carrega automaticamente
+    carregar();
+</script>
+</body>
+</html>

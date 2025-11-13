@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>👑 Gerenciar Usuários</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        async function carregarUsuarios() {
+            const token = localStorage.getItem('token');
+            const resposta = await fetch('http://localhost:8080/usuarios', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+            const usuarios = await resposta.json();
+            const tabela = document.getElementById('tabelaUsuarios');
+            tabela.innerHTML = '';
+
+            usuarios.forEach(u => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+          <td>${u.idUsuario}</td>
+          <td>${u.nomeUsuario}</td>
+          <td>${u.grupo?.nomeGrupo || 'Sem grupo'}</td>
+          <td>${u.ativo ? 'Ativo' : 'Inativo'}</td>
+          <td>
+            <button onclick="editar(${u.idUsuario})">✏️ Editar</button>
+            <button onclick="excluir(${u.idUsuario})">🗑️ Excluir</button>
+          </td>
+        `;
+                tabela.appendChild(linha);
+            });
+        }
+
+        async function excluir(id) {
+            if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+            const token = localStorage.getItem('token');
+            await fetch(`http://localhost:8080/usuarios/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            carregarUsuarios();
+        }
+
+        function editar(id) {
+            window.location.href = `editar-usuario.html?id=${id}`;
+        }
+
+        window.onload = carregarUsuarios;
+    </script>
+</head>
+<body>
+<h1>👑 Gerenciar Usuários</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th><th>Nome</th><th>Grupo</th><th>Status</th><th>Ações</th>
+    </tr>
+    </thead>
+    <tbody id="tabelaUsuarios"></tbody>
+</table>
+<br>
+<button onclick="window.location.href='cadastrar-usuario.html'">➕ Cadastrar Novo</button>
+<button onclick="window.location.href='menu.html'">⬅ Voltar</button>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Materiais</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            width: 95%;
+            max-width: 1000px;
+            margin: 10px auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .form-row input, .form-row select {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px;
+            border: 1.5px solid #7fbf7f;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+        th, td {
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+        .actions {
+            display: flex;
+            gap: 4px;
+        }
+        .actions button {
+            padding: 4px 8px;
+            font-size: 0.75em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+        .required {
+            border-color: #b83232 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🧾 Materiais</h1>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar/Editar Material</h3>
+        <div class="form-row">
+            <input id="m_id" placeholder="ID (vazio = novo)">
+            <input id="m_tipo" placeholder="Tipo do Material *" class="required">
+            <input id="m_descricao" placeholder="Descrição">
+        </div>
+        <div class="form-row">
+            <input id="m_preco" placeholder="Preço por Kg (R$) *" type="number" step="0.01" min="0" class="required">
+        </div>
+        <div class="btn-group">
+            <button onclick="salvarMaterial()" style="background: #2f6b2f;">💾 Salvar</button>
+            <button onclick="limpar()" style="background: #666;">🗑️ Limpar</button>
+        </div>
+        <div style="font-size: 0.8em; color: #b83232; margin-top: 8px;">
+            * Campos obrigatórios
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Lista de Materiais</h3>
+        <div id="msg">Carregando...</div>
+        <table id="tbl" style="display:none">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Descricao</th>
+                <th>Preço por Kg</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center;">
+        <button onclick="voltar()" style="width: auto; padding: 8px 16px; font-size: 0.9em;">⬅ Voltar</button>
+    </div>
+</div>
+
+<script>
+    const BASE='http://localhost:8080/api';
+
+    async function load() {
+        try {
+            const res = await fetch(`${BASE}/materiais`);
+
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+            }
+
+            const data = await res.json();
+            const tbody = document.querySelector('#tbl tbody');
+            tbody.innerHTML='';
+
+            if (!Array.isArray(data)) {
+                throw new Error('Resposta da API não é um array: ' + JSON.stringify(data));
+            }
+
+            if (data.length === 0) {
+                document.getElementById('msg').innerHTML = '<div style="color: #666; text-align: center;">Nenhum material cadastrado</div>';
+                return;
+            }
+
+            data.forEach(m=>{
+                const tr=document.createElement('tr');
+                tr.innerHTML=`
+                    <td>${m.idMaterial}</td>
+                    <td><strong>${m.tipo}</strong></td>
+                    <td>${m.descricao||''}</td>
+                    <td>R$ ${m.precoKg ? m.precoKg.toFixed(2) : '0.00'}</td>
+                    <td class="actions">
+                        <button onclick="editar(${m.idMaterial})" style="background: #2f6b2f;">Editar</button>
+                        <button onclick="deletar(${m.idMaterial})" style="background: #dc3545;">Excluir</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('msg').style.display='none';
+            document.getElementById('tbl').style.display='';
+        } catch(e){
+            document.getElementById('msg').innerHTML = `<div style="color: #b83232; padding: 10px;">Erro ao carregar materiais: ${e.message}</div>`;
+        }
+    }
+
+    function editar(id){
+        fetch(`${BASE}/materiais/${id}`)
+            .then(r=>{
+                if (!r.ok) throw new Error('Material não encontrado');
+                return r.json();
+            })
+            .then(m=>{
+                document.getElementById('m_id').value = m.idMaterial;
+                document.getElementById('m_tipo').value = m.tipo;
+                document.getElementById('m_descricao').value = m.descricao || '';
+                document.getElementById('m_preco').value = m.precoKg || '';
+            })
+            .catch(e=>alert('Erro: '+e.message));
+    }
+
+    async function salvarMaterial(){
+        const id = document.getElementById('m_id').value.trim();
+        const tipo = document.getElementById('m_tipo').value.trim();
+        const preco = document.getElementById('m_preco').value;
+
+        // VALIDAÇÃO: Verificar campos obrigatórios
+        if (!tipo || !preco) {
+            alert('❌ Preencha todos os campos obrigatórios!');
+
+            // Destacar campos vazios
+            if (!tipo) document.getElementById('m_tipo').classList.add('required');
+            if (!preco) document.getElementById('m_preco').classList.add('required');
+
+            return;
+        }
+
+        // Remover destaque de erro
+        document.getElementById('m_tipo').classList.remove('required');
+        document.getElementById('m_preco').classList.remove('required');
+
+        const payload = {
+            tipo: tipo,
+            descricao: document.getElementById('m_descricao').value.trim(),
+            precoKg: parseFloat(preco)
+        };
+
+        if (id) {
+            payload.idMaterial = parseInt(id);
+        }
+
+        try {
+            let res;
+            if (id) {
+                res = await fetch(`${BASE}/materiais/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                res = await fetch(`${BASE}/materiais`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            }
+
+            if (res.ok) {
+                alert('✅ Salvo!');
+                limpar();
+                location.reload(); // Evita loop
+            } else {
+                const t = await res.text();
+                alert('❌ Erro: ' + t);
+            }
+        } catch(e){
+            alert('❌ Erro: ' + e.message);
+        }
+    }
+
+    async function deletar(id){
+        if (!confirm('Excluir este material?')) return;
+        try {
+            const res = await fetch(`${BASE}/materiais/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                alert('✅ Excluído!');
+                location.reload(); // Evita loop
+            } else {
+                alert('❌ Erro ao excluir');
+            }
+        } catch(e){
+            alert('❌ Erro: ' + e.message);
+        }
+    }
+
+    function limpar(){
+        document.getElementById('m_id').value = '';
+        document.getElementById('m_tipo').value = '';
+        document.getElementById('m_descricao').value = '';
+        document.getElementById('m_preco').value = '';
+
+        // Remover destaque de erro
+        document.getElementById('m_tipo').classList.remove('required');
+        document.getElementById('m_preco').classList.remove('required');
+    }
+
+    function voltar(){
+        location.href = 'menu.html';
+    }
+
+    load();
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Usuários</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            width: 900px;
+            max-width: 95%;
+            margin: 20px auto;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .row input, .row select {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+        .actions button {
+            margin: 2px;
+            padding: 6px 10px;
+            font-size: 0.8em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+        .muted { color:#666; font-size:0.9rem; }
+        h1 {
+            text-align: center;
+            color: #245d24;
+        }
+        .btn-voltar {
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        .status-active {
+            color: #2f6b2f;
+            font-weight: bold;
+        }
+        .status-inactive {
+            color: #b83232;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="section">
+        <h1>👑 Gerenciar Usuários</h1>
+    </div>
+
+    <div class="section">
+        <h3>➕ Cadastrar Novo Usuário</h3>
+        <div class="row">
+            <input id="newNome" placeholder="Nome de usuário">
+            <input id="newSenha" type="password" placeholder="Senha">
+            <select id="newGrupo">
+                <option value="">Selecione grupo</option>
+                <option value="ADM">Administrador</option>
+                <option value="GER">Gerente</option>
+                <option value="OPE">Funcionário</option>     <!-- TEXTO: Funcionário, VALUE: OPE -->
+                <option value="VIS">Cliente</option>         <!-- TEXTO: Cliente, VALUE: VIS -->
+            </select>
+            <button onclick="cadastrarUsuario()">Cadastrar</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>📋 Lista de Usuários</h3>
+        <div id="usuariosArea" class="muted">Carregando usuários...</div>
+        <table id="usuariosTable" style="display:none">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Grupo</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="btn-voltar" onclick="voltar()">⬅ Voltar ao Menu</button>
+    </div>
+</div>
+
+<script>
+    const BASE = 'http://localhost:8080/api';
+
+    async function tryListUsuarios() {
+        try {
+            const res = await fetch(`${BASE}/usuarios`);
+            if (!res.ok) throw new Error('Erro ao carregar usuários');
+            const data = await res.json();
+            renderUsuarios(data);
+        } catch (e) {
+            document.getElementById('usuariosArea').textContent = 'Erro ao carregar usuários: ' + e.message;
+        }
+    }
+
+    function renderUsuarios(data) {
+        const table = document.querySelector('#usuariosTable tbody');
+        table.innerHTML = '';
+
+        // Função para traduzir o nome do grupo para display
+        function traduzirGrupo(grupo) {
+            const traducoes = {
+                'Administrador': 'Administrador',
+                'Gerente': 'Gerente',
+                'Operador': 'Funcionário',    // ← MOSTRA "Funcionário"
+                'Visualizador': 'Cliente'      // ← MOSTRA "Cliente"
+            };
+            return traducoes[grupo] || grupo;
+        }
+
+        data.forEach(u => {
+            const nomeGrupoDisplay = traduzirGrupo(u.grupo?.nomeGrupo || '');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${u.idUsuario || ''}</td>
+            <td><strong>${u.nomeUsuario || ''}</strong></td>
+            <td>${nomeGrupoDisplay}</td>  <!-- ← USA A TRADUÇÃO AQUI -->
+            <td class="${u.ativo ? 'status-active' : 'status-inactive'}">
+                ${u.ativo ? '✅ Ativo' : '❌ Inativo'}
+            </td>
+            <td class="actions">
+                <button onclick="toggleAtivo(${u.idUsuario}, ${!u.ativo})"
+                        style="background: ${u.ativo ? '#b83232' : '#2f6b2f'}">
+                    ${u.ativo ? 'Desativar' : 'Ativar'}
+                </button>
+                <button onclick="deletarUsuario(${u.idUsuario})"
+                        style="background: #dc3545;">
+                    Excluir
+                </button>
+            </td>
+        `;
+            table.appendChild(tr);
+        });
+
+        document.getElementById('usuariosArea').style.display = 'none';
+        document.getElementById('usuariosTable').style.display = 'table';
+    }
+
+    async function cadastrarUsuario() {
+        const nome = document.getElementById('newNome').value.trim();
+        const senha = document.getElementById('newSenha').value;
+        const grupoId = document.getElementById('newGrupo').value;
+
+        if (!nome || !senha || !grupoId) {
+            alert('⚠️ Preencha todos os campos!');
+            return;
+        }
+
+        const payload = {
+            nomeUsuario: nome,
+            senha: senha,
+            grupo: {
+                idGrupo: grupoId
+            },
+            ativo: true
+        };
+
+        console.log('🔍 DEBUG - Tentando cadastrar usuário:', payload);
+
+        try {
+            console.log('🔍 DEBUG - Fazendo fetch para:', `${BASE}/usuarios`);
+
+            const res = await fetch(`${BASE}/usuarios`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            console.log('🔍 DEBUG - Response status:', res.status);
+            console.log('🔍 DEBUG - Response ok:', res.ok);
+
+            if (res.ok) {
+                const data = await res.json();
+                console.log('🔍 DEBUG - Usuário criado:', data);
+                alert('✅ Usuário criado com sucesso!');
+                document.getElementById('newNome').value = '';
+                document.getElementById('newSenha').value = '';
+                document.getElementById('newGrupo').value = '';
+                tryListUsuarios();
+            } else {
+                const errorText = await res.text();
+                console.error('🔍 DEBUG - Erro do servidor:', {
+                    status: res.status,
+                    statusText: res.statusText,
+                    error: errorText
+                });
+                alert(`❌ Erro ${res.status}: ${errorText || 'Erro ao criar usuário'}`);
+            }
+        } catch (e) {
+            console.error('🔍 DEBUG - Erro de conexão completo:', e);
+            alert('❌ Erro de conexão: ' + e.message + '\nVerifique se o backend está rodando na porta 8080.');
+        }
+    }
+
+    async function toggleAtivo(idUsuario, novoStatus) {
+        try {
+            const res = await fetch(`${BASE}/usuarios/${idUsuario}/status`, {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(novoStatus)
+            });
+
+            if (res.ok) {
+                alert(`✅ Usuário ${novoStatus ? 'ativado' : 'desativado'} com sucesso!`);
+                tryListUsuarios();
+            } else {
+                alert('❌ Erro ao atualizar usuário');
+            }
+        } catch (e) {
+            alert('❌ Erro: ' + e.message);
+        }
+    }
+
+    async function deletarUsuario(idUsuario) {
+        if (!confirm('⚠️ Tem certeza que deseja excluir este usuário?')) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`${BASE}/usuarios/${idUsuario}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                alert('✅ Usuário excluído com sucesso!');
+                tryListUsuarios();
+            } else {
+                alert('❌ Erro ao excluir usuário');
+            }
+        } catch (e) {
+            alert('❌ Erro: ' + e.message);
+        }
+    }
+
+    function voltar() {
+        location.href = 'menu.html';
+    }
+
+    tryListUsuarios();
+</script>
+</body>
+</html>

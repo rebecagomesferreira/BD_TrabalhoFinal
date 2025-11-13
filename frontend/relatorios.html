@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container{max-width:800px}
+        .stats-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #2f6b2f;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stat-number {
+            font-weight: bold;
+            color: #2f6b2f;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Relatórios Gerais</h1>
+
+    <button onclick="gerar()" style="background: #2f6b2f; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+        Gerar relatório
+    </button>
+
+    <div id="out" style="margin-top:12px;"></div>
+
+    <hr>
+    <h3>Relatório rápido — contagem de materiais</h3>
+    <div id="matCount">Carregando...</div>
+
+    <button onclick="voltar()" style="margin-top: 20px;">⬅ Voltar ao menu</button>
+</div>
+
+<script>
+    const BASE='http://localhost:8080/api';
+
+    async function gerar(){
+        try{
+            const res = await fetch(`${BASE}/admin/relatorios/completo`);
+            const data = await res.json();
+
+            // Formatar o relatório de forma mais legível
+            let html = `
+                <div class="stats-box">
+                    <h3>👥 Estatísticas de Usuários</h3>
+                    <div class="stat-item"><span>Total de Usuários:</span> <span class="stat-number">${data.estatisticasUsuarios.totalUsuarios}</span></div>
+                    <div class="stat-item"><span>Usuários Ativos:</span> <span class="stat-number">${data.estatisticasUsuarios.usuariosAtivos}</span></div>
+                    <div class="stat-item"><span>Usuários Inativos:</span> <span class="stat-number">${data.estatisticasUsuarios.usuariosInativos}</span></div>
+                </div>
+
+                <div class="stats-box">
+                    <h3>🏢 Estatísticas de Fornecedores</h3>
+                    <div class="stat-item"><span>Total de Fornecedores:</span> <span class="stat-number">${data.estatisticasFornecedores.totalFornecedores}</span></div>
+                </div>
+
+                <div class="stats-box">
+                    <h3>🧾 Estatísticas de Materiais</h3>
+                    <div class="stat-item"><span>Total de Materiais:</span> <span class="stat-number">${data.estatisticasMateriais.totalMateriais}</span></div>
+                    <div class="stat-item"><span>Valor Total em Estoque:</span> <span class="stat-number">R$ ${data.estatisticasMateriais.valorTotalEstoque.toFixed(2)}</span></div>
+                </div>
+
+                <div class="stats-box">
+                    <h3>⚙️ Estatísticas do Sistema</h3>
+                    <div class="stat-item"><span>Total de Registros:</span> <span class="stat-number">${data.estatisticasSistema.totalRegistros}</span></div>
+                    <div class="stat-item"><span>Status do Backup:</span> <span>${data.estatisticasSistema.statusBackup}</span></div>
+                </div>
+            `;
+
+            document.getElementById('out').innerHTML = html;
+        }catch(e){
+            document.getElementById('out').textContent = 'Erro: '+e.message;
+        }
+    }
+
+    async function loadCount(){
+        try {
+            const res = await fetch(`${BASE}/materiais`);
+            if (!res.ok) throw new Error('Não foi possível buscar materiais');
+            const arr = await res.json();
+            document.getElementById('matCount').textContent = `${arr.length} materiais cadastrados`;
+        } catch(e){
+            document.getElementById('matCount').textContent = 'Erro: '+e.message;
+        }
+    }
+
+    function voltar(){
+        location.href='menu.html';
+    }
+
+    loadCount();
+</script>
+</body>
+</html>
